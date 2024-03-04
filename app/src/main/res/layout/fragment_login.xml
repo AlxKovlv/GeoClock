@@ -93,6 +93,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="20dp"
         android:id="@+id/no_acount_tv"
-        android:textColor="@color/purple_700" />
+        android:textColor="@color/black" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
