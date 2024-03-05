@@ -41,7 +41,7 @@ class AuthRepositoryFirebase: AuthRepository {
         userEmail: String,
         userPhone: String,
         userLoginPass: String
-    ) {
+    ) : Resource<User> {
         return withContext(Dispatchers.IO){
             safeCall {
                 val registrationResult = firebaseAuth.createUserWithEmailAndPassword(userEmail, userLoginPass).await()
