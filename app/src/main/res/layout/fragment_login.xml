@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="300dp"
         android:text="Sign In"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintStart_toStartOf="parent"
@@ -86,7 +86,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Don't have an acount yet, click to register"
+        android:text="New user registration"
         android:textSize="18sp"
         app:layout_constraintTop_toBottomOf="@+id/buttonLogin"
         app:layout_constraintStart_toStartOf="parent"
