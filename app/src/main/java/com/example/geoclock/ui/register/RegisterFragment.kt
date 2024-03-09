@@ -41,6 +41,7 @@ class RegisterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.userRegistrationStatus.observe(viewLifecycleOwner){
+
             when(it){
                 is Resource.Loading -> {
                     binding.registerProgress.isVisible = true
@@ -48,11 +49,12 @@ class RegisterFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     Toast.makeText(requireContext(),"Registration successful", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.action_registerFragment_to_homeFragment) //to login?
+                    findNavController().navigate(R.id.action_registerFragment_to_homeFragment) //might change to login
                 }
                 is Resource.Error -> {
                     binding.registerProgress.isVisible = false
                     binding.userRegisterButton.isEnabled = true
+                    Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
                 }
             }
         }
