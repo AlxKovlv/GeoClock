@@ -7,21 +7,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.geoclock.databinding.CardLayoutBinding
 import com.example.geoclock.model.Card
 
-class CardsAdapter(private val callBack:TaskListener) : RecyclerView.Adapter<CardsAdapter.JobViewHolder>() {
+class CardsAdapter(private val callBack:TaskListener) : RecyclerView.Adapter<CardsAdapter.CardViewHolder>() {
 
-    private val jobs = ArrayList<Card>()
+    private val cards = ArrayList<Card>()
 
-    fun setJobs(jobs: Collection<Card>){
-        this.jobs.clear()
-        this.jobs.addAll(jobs)
+    fun setCards(cards: Collection<Card>){
+        this.cards.clear()
+        this.cards.addAll(cards)
         notifyDataSetChanged()
     }
     interface TaskListener {
-        fun onJobClicked (index:Int)
-        fun onJobLongClicked(index: Int)
+        fun onCardClicked (index:Int)
+        fun onCardLongClicked(index: Int)
     }
 
-    inner class JobViewHolder(private val binding: CardLayoutBinding) : RecyclerView.ViewHolder(binding.root),
+    inner class CardViewHolder(private val binding: CardLayoutBinding) : RecyclerView.ViewHolder(binding.root),
         View.OnClickListener, View.OnLongClickListener {
 
         init {
@@ -37,23 +37,23 @@ class CardsAdapter(private val callBack:TaskListener) : RecyclerView.Adapter<Car
         }
 
         override fun onClick(v: View?) {
-            callBack.onJobClicked(adapterPosition)
+            callBack.onCardClicked(adapterPosition)
         }
 
         override fun onLongClick(v: View?): Boolean {
-            callBack.onJobLongClicked(adapterPosition)
+            callBack.onCardLongClicked(adapterPosition)
             return false
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = JobViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CardViewHolder(
         CardLayoutBinding.inflate(LayoutInflater.from(parent.context),
         parent,
         false)
     )
 
-    override fun onBindViewHolder(holder: JobViewHolder, position: Int) = holder.bind(jobs[position])
+    override fun onBindViewHolder(holder: CardViewHolder, position: Int) = holder.bind(cards[position])
 
-    override fun getItemCount() = jobs.size
+    override fun getItemCount() = cards.size
 
 }

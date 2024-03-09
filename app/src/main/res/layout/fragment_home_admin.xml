@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="8dp"
     android:id="@+id/coordinator">
 
-    <!-- Linear Layout for Vertical Arrangement -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- Title -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,7 +19,6 @@
             android:gravity="center"
             android:padding="16dp"/>
 
-        <!-- RecyclerView -->
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
@@ -30,14 +26,12 @@
             android:layout_weight="1"
             />
 
-        <!-- Bottom Bar with MaterialButtons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
 
             android:orientation="horizontal">
 
-            <!-- Button: Reports by Date -->
             <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -46,7 +40,6 @@
 
                 />
 
-            <!-- Button: Reports by Worker -->
             <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -55,7 +48,6 @@
 
                 />
 
-            <!-- Button: Export Reports -->
             <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -64,7 +56,6 @@
 
                 />
 
-            <!-- Button: Logout -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_log_out"
                 android:layout_width="0dp"
