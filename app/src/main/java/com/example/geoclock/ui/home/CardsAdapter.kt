@@ -32,7 +32,7 @@ class CardsAdapter(private val callBack:TaskListener) : RecyclerView.Adapter<Car
 
         fun bind(card: Card){
             binding.textUserName.text = card.userName
-            binding.textDate.text = card.dateTime.toString()
+            binding.textDate.text = card.date.toString()
 
         }
 

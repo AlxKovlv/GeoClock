@@ -8,13 +8,14 @@ import androidx.navigation.fragment.findNavController
 import com.example.geoclock.R
 import com.example.geoclock.databinding.FragmentHomeBinding
 import com.example.geoclock.repos.FirebaseImpl.AuthRepositoryFirebase
+import com.example.geoclock.repos.FirebaseImpl.CardRepositoryFirebase
 import com.example.geoclock.util.autoCleared
 
 class HomeFragment : Fragment() {
 
     private var binding : FragmentHomeBinding by autoCleared()
     private val viewModel : HomeViewModel by viewModels{
-        HomeViewModel.HomeViewModelFactory(AuthRepositoryFirebase())
+        HomeViewModel.HomeViewModelFactory(AuthRepositoryFirebase(), CardRepositoryFirebase())
     }
 
     override fun onCreateView(
