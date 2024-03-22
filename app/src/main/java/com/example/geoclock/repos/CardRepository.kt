@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 
 interface CardRepository {
 
-    suspend fun addCard(title:String) : Resource<Void>
+    suspend fun addCard(title: String, date: String): Resource<Void>
     suspend fun deleteCard(cardId:String) : Resource<Void>
     suspend fun getCard(cardId:String) : Resource<Card>
-    suspend fun setDate(cardId:String, date:Int) : Resource<Void>
+    suspend fun setDate(cardId:String, date:String) : Resource<Void>
     suspend fun getCards() : Resource<List<Card>>
     fun  getCardFlow() : Flow<Resource<List<Card>>>
     fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>)

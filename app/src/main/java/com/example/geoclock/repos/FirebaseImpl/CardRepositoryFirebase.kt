@@ -14,14 +14,16 @@ import safeCall
 class CardRepositoryFirebase : CardRepository {
 
     private val cardRef = FirebaseFirestore.getInstance().collection("cards")
-    override suspend fun addCard(title: String) = withContext(Dispatchers.IO){
-        safeCall{
+
+    override suspend fun addCard(title: String, date: String) = withContext(Dispatchers.IO) {
+        safeCall {
             val cardId = cardRef.document().id
-            val card = Card(cardId, title)
+            val card = Card(cardId, title, date.toString())
             val addition = cardRef.document(cardId).set(card).await()
             Resource.Success(addition)
         }
     }
+
 
     override suspend fun deleteCard(cardId: String) = withContext(Dispatchers.IO){
         safeCall {
@@ -30,9 +32,9 @@ class CardRepositoryFirebase : CardRepository {
         }
     }
 
-    override suspend fun setDate(cardId: String, date:Int) = withContext(Dispatchers.IO){
+    override suspend fun setDate(cardId: String, date: String) = withContext(Dispatchers.IO){
         safeCall {
-            val result = cardRef.document(cardId).update("date", Int).await()
+            val result = cardRef.document(cardId).update("date", date).await()
             Resource.Success(result)
         }
     }

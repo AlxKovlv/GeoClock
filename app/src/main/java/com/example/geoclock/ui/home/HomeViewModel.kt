@@ -22,31 +22,58 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
 
     private val _deleteCardStatus = MutableLiveData<Resource<Void>>()
     val deleteCardStatus:LiveData<Resource<Void>> = _deleteCardStatus
+
+    fun getDefaultTitle(callback: (String) -> Unit) {
+        viewModelScope.launch {
+            // Fetch the default title from Firestore (replace "defaultTitleDocumentId" with your document ID)
+            val defaultTitleDocumentId = "your_default_title_document_id"
+            val defaultTitleResult = cardRep.getCard(defaultTitleDocumentId)
+            if (defaultTitleResult is Resource.Success) {
+                val defaultTitle = defaultTitleResult.data?.title ?: "Default Title"
+                callback(defaultTitle)
+            } else {
+                // If fetching the default title fails, provide a default fallback title
+                callback("Default Title")
+            }
+        }
+    }
     fun sighOut(){
         authRep.logout()
     }
 
-    fun addCard(title:String){
+    fun addCard(title: String, date: String) {
         viewModelScope.launch {
-            if(title.isEmpty()) _addCardStatus.postValue(Resource.Error("Empty title"))
-            else {
+            if (title.isEmpty()) {
+                _addCardStatus.postValue(Resource.Error("Empty title"))
+            } else {
                 _addCardStatus.postValue(Resource.Loading())
-                _addCardStatus.postValue(cardRep.addCard(title))
+                _addCardStatus.postValue(cardRep.addCard(title, date))
             }
         }
     }
+
 
     fun deleteCard(cardId:String){
         viewModelScope.launch {
-            if(cardId.isEmpty()) _addCardStatus.postValue(Resource.Error("Empty card id"))
-            else {
-                _addCardStatus.postValue(Resource.Loading())
-                _addCardStatus.postValue(cardRep.addCard(cardId))
+            if(cardId.isEmpty()) {
+                _deleteCardStatus.postValue(Resource.Error("Empty card id"))
+            } else {
+                _deleteCardStatus.postValue(Resource.Loading())
+                val result = cardRep.deleteCard(cardId)
+                if (result is Resource.Success) {
+                    // Remove the deleted card from the list of cards
+                    val currentCards = _cardsStatus.value?.data?.toMutableList() ?: mutableListOf()
+                    currentCards.removeAll { it.cardId == cardId }
+                    _cardsStatus.postValue(Resource.Success(currentCards))
+                }
+                _deleteCardStatus.postValue(result)
             }
         }
     }
 
-    fun setDate(cardId:String, date:Int){
+
+
+    fun setDate(cardId:String, date: String){
         viewModelScope.launch {
             cardRep.setDate(cardId, date)
         }

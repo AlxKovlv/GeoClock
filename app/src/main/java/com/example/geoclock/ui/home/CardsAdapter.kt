@@ -6,54 +6,69 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geoclock.databinding.CardLayoutBinding
 import com.example.geoclock.model.Card
+import java.text.SimpleDateFormat
+import java.util.*
 
-class CardsAdapter(private val callBack:TaskListener) : RecyclerView.Adapter<CardsAdapter.CardViewHolder>() {
+class CardsAdapter(private val callBack: CardListener) : RecyclerView.Adapter<CardsAdapter.CardViewHolder>() {
 
     private val cards = ArrayList<Card>()
 
-    fun setCards(cards: Collection<Card>){
+    fun setCards(cards: Collection<Card>) {
         this.cards.clear()
         this.cards.addAll(cards)
         notifyDataSetChanged()
     }
-    interface TaskListener {
-        fun onCardClicked (index:Int)
-        fun onCardLongClicked(index: Int)
+
+    interface CardListener {
+        fun onCardClicked(card: Card)
+        fun onCardLongClicked(card: Card)
     }
 
-    inner class CardViewHolder(private val binding: CardLayoutBinding) : RecyclerView.ViewHolder(binding.root),
-        View.OnClickListener, View.OnLongClickListener {
+    inner class CardViewHolder(private val binding: CardLayoutBinding) :
+        RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener {
 
         init {
             binding.root.setOnClickListener(this)
             binding.root.setOnLongClickListener(this)
-
         }
 
-        fun bind(card: Card){
+        fun bind(card: Card) {
             binding.textUserName.text = card.userName
-            binding.textDate.text = card.date.toString()
 
+            // Convert timestamp string to a formatted date string
+            val dateInMillis = card.date.toLongOrNull()
+            val formattedDate = if (dateInMillis != null) {
+                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                val calendar = Calendar.getInstance()
+                calendar.timeInMillis = dateInMillis
+                sdf.format(calendar.time)
+            } else {
+                "Invalid Date"
+            }
+            binding.textDate.text = formattedDate
         }
 
         override fun onClick(v: View?) {
-            callBack.onCardClicked(adapterPosition)
+            callBack.onCardClicked(cards[adapterPosition])
         }
 
         override fun onLongClick(v: View?): Boolean {
-            callBack.onCardLongClicked(adapterPosition)
+            callBack.onCardLongClicked(cards[adapterPosition])
             return false
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = CardViewHolder(
-        CardLayoutBinding.inflate(LayoutInflater.from(parent.context),
-        parent,
-        false)
-    )
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+        val binding = CardLayoutBinding.inflate(inflater, parent, false)
+        return CardViewHolder(binding)
+    }
 
-    override fun onBindViewHolder(holder: CardViewHolder, position: Int) = holder.bind(cards[position])
+    override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
+        holder.bind(cards[position])
+    }
 
-    override fun getItemCount() = cards.size
-
+    override fun getItemCount(): Int {
+        return cards.size
+    }
 }

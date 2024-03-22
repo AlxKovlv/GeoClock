@@ -4,7 +4,7 @@ data class Card(
     val cardId: String="",
     val title: String="",
     val userName: String="",
-    val date: Int =0
+    val date: String=""
 ){}
 
 
