@@ -39,13 +39,13 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
         authRep.logout()
     }
 
-    fun addCard(title: String, date: String) {
+    fun addCard(title: String, date: String, time: String) {
         viewModelScope.launch {
             if (title.isEmpty()) {
                 _addCardStatus.postValue(Resource.Error("Empty title"))
             } else {
                 _addCardStatus.postValue(Resource.Loading())
-                _addCardStatus.postValue(cardRep.addCard(title, date))
+                _addCardStatus.postValue(cardRep.addCard(title, date, time))
             }
         }
     }
@@ -59,7 +59,6 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
                 _deleteCardStatus.postValue(Resource.Loading())
                 val result = cardRep.deleteCard(cardId)
                 if (result is Resource.Success) {
-                    // Remove the deleted card from the list of cards
                     val currentCards = _cardsStatus.value?.data?.toMutableList() ?: mutableListOf()
                     currentCards.removeAll { it.cardId == cardId }
                     _cardsStatus.postValue(Resource.Success(currentCards))
@@ -81,7 +80,7 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
         cardRep.getCardsLiveData(_cardsStatus)
     }
 
-    class HomeViewModelFactory(private val authRep: AuthRepository, val cardRep:CardRepository) : ViewModelProvider.NewInstanceFactory(){
+    class HomeViewModelFactory(private val authRep: AuthRepository, private val cardRep:CardRepository) : ViewModelProvider.NewInstanceFactory(){
         override fun <T : ViewModel> create(modelClass: Class<T>, extras: CreationExtras): T {
             return HomeViewModel(authRep, cardRep) as T
         }

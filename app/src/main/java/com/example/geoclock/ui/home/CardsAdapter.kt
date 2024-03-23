@@ -36,6 +36,7 @@ class CardsAdapter(private val callBack: CardListener) : RecyclerView.Adapter<Ca
         fun bind(card: Card) {
             binding.textUserName.text = card.userName
 
+            // Convert the date string to a Date object
             val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
             val date = try {
                 dateFormat.parse(card.date)
@@ -43,13 +44,17 @@ class CardsAdapter(private val callBack: CardListener) : RecyclerView.Adapter<Ca
                 null
             }
 
+            // Format the date
             val formattedDate = if (date != null) {
                 val formattedDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                 formattedDateFormat.format(date)
             } else {
                 "Invalid Date"
             }
-            binding.textDate.text = formattedDate
+
+            // Bind
+            binding.textDate.text = "Date: $formattedDate"
+            binding.textTime.text = "Time: ${card.time}"
         }
 
         override fun onClick(v: View?) {

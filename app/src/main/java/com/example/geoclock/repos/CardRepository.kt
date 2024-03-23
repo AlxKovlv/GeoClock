@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CardRepository {
 
-    suspend fun addCard(title: String, date: String): Resource<Void>
+    suspend fun addCard(title: String, date: String, time: String): Resource<Void>
     suspend fun deleteCard(cardId:String) : Resource<Void>
     suspend fun getCard(cardId:String) : Resource<Card>
     suspend fun setDate(cardId:String, date:String) : Resource<Void>

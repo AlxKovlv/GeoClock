@@ -42,7 +42,8 @@ class HomeFragment : Fragment() {
                     .setCancelable(false)
                     .setPositiveButton("Confirm") { _, _ ->
                         val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
-                        viewModel.addCard(defaultTitle, currentDate)
+                        val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()) // Get current time
+                        viewModel.addCard(defaultTitle, currentDate, currentTime) // Pass current time as time parameter
                     }
                     .setNegativeButton("Cancel") { dialog, _ ->
                         dialog.dismiss()
@@ -50,6 +51,7 @@ class HomeFragment : Fragment() {
                 alertDialogBuilder.show()
             }
         }
+
 
 
         binding.btnLogOut.setOnClickListener{
