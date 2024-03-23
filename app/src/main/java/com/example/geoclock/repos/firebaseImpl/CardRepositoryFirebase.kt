@@ -63,7 +63,7 @@ class CardRepositoryFirebase : CardRepository {
     override fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>) {
         data.postValue(Resource.Loading())
 
-        cardRef.orderBy("title").addSnapshotListener {snapshot, e->
+        cardRef.orderBy("time").addSnapshotListener {snapshot, e->
             if(e!=null){
                 data.postValue(Resource.Error(e.localizedMessage ?: "Unknown error"))
             }

@@ -3,7 +3,6 @@ package com.example.geoclock.repos
 import androidx.lifecycle.MutableLiveData
 import com.example.geoclock.model.Card
 import com.example.geoclock.util.Resource
-import kotlinx.coroutines.flow.Flow
 
 interface CardRepository {
 
