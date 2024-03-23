@@ -1,4 +1,4 @@
-package com.example.geoclock.repos.FirebaseImpl
+package com.example.geoclock.repos.firebaseImpl
 
 import com.example.geoclock.model.User
 import com.example.geoclock.repos.AuthRepository

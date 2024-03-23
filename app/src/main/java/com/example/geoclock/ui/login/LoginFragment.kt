@@ -11,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.geoclock.R
 import com.example.geoclock.databinding.FragmentLoginBinding
-import com.example.geoclock.repos.FirebaseImpl.AuthRepositoryFirebase
+import com.example.geoclock.repos.firebaseImpl.AuthRepositoryFirebase
 import com.example.geoclock.util.Resource
 import com.example.geoclock.util.autoCleared
 

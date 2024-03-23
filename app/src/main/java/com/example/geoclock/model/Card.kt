@@ -6,8 +6,3 @@ data class Card(
     val userName: String="",
     val date: String=""
 ){}
-
-
-
-
-

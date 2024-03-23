@@ -1,7 +1,6 @@
 package com.example.geoclock.ui.register
 
 import android.os.Bundle
-import android.view.ContextMenu
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.geoclock.R
 import com.example.geoclock.databinding.FragmentRegisterBinding
-import com.example.geoclock.repos.FirebaseImpl.AuthRepositoryFirebase
+import com.example.geoclock.repos.firebaseImpl.AuthRepositoryFirebase
 import com.example.geoclock.util.Resource
 import com.example.geoclock.util.autoCleared
 

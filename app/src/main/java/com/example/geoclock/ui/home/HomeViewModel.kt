@@ -14,7 +14,7 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardRepository) : ViewModel() {
 
-    val _cardsStatus : MutableLiveData<Resource<List<Card>>> = MutableLiveData()
+    private val _cardsStatus : MutableLiveData<Resource<List<Card>>> = MutableLiveData()
     val cardStatus : LiveData<Resource<List<Card>>> = _cardsStatus
 
     private val _addCardStatus = MutableLiveData<Resource<Void>>()
@@ -25,14 +25,12 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
 
     fun getDefaultTitle(callback: (String) -> Unit) {
         viewModelScope.launch {
-            // Fetch the default title from Firestore (replace "defaultTitleDocumentId" with your document ID)
             val defaultTitleDocumentId = "your_default_title_document_id"
             val defaultTitleResult = cardRep.getCard(defaultTitleDocumentId)
             if (defaultTitleResult is Resource.Success) {
                 val defaultTitle = defaultTitleResult.data?.title ?: "Default Title"
                 callback(defaultTitle)
             } else {
-                // If fetching the default title fails, provide a default fallback title
                 callback("Default Title")
             }
         }

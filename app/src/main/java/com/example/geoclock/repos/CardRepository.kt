@@ -12,7 +12,6 @@ interface CardRepository {
     suspend fun getCard(cardId:String) : Resource<Card>
     suspend fun setDate(cardId:String, date:String) : Resource<Void>
     suspend fun getCards() : Resource<List<Card>>
-    fun  getCardFlow() : Flow<Resource<List<Card>>>
     fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>)
 
 }

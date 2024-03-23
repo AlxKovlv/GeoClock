@@ -10,11 +10,10 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.geoclock.R
-import com.example.geoclock.databinding.AddCardDialogBinding
 import com.example.geoclock.databinding.FragmentHomeBinding
 import com.example.geoclock.model.Card
-import com.example.geoclock.repos.FirebaseImpl.AuthRepositoryFirebase
-import com.example.geoclock.repos.FirebaseImpl.CardRepositoryFirebase
+import com.example.geoclock.repos.firebaseImpl.AuthRepositoryFirebase
+import com.example.geoclock.repos.firebaseImpl.CardRepositoryFirebase
 import com.example.geoclock.util.Resource
 import com.example.geoclock.util.autoCleared
 import com.google.android.material.snackbar.Snackbar
@@ -36,26 +35,18 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.btnStart.setOnClickListener {
-            // Retrieve the default title from Firestore
             viewModel.getDefaultTitle { defaultTitle ->
-                // Inflate the custom dialog layout
                 val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_card_dialog, null)
-
-                // Create an AlertDialog.Builder instance
                 val alertDialogBuilder = AlertDialog.Builder(requireContext())
                     .setView(dialogView)
                     .setCancelable(false)
                     .setPositiveButton("Confirm") { _, _ ->
-                        // User confirmed, proceed with adding the card using the default title
                         val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
                         viewModel.addCard(defaultTitle, currentDate)
                     }
                     .setNegativeButton("Cancel") { dialog, _ ->
-                        // User canceled, dismiss the dialog
                         dialog.dismiss()
                     }
-
-                // Show the AlertDialog
                 alertDialogBuilder.show()
             }
         }

@@ -1,4 +1,4 @@
-package com.example.geoclock.repos.FirebaseImpl
+package com.example.geoclock.repos.firebaseImpl
 
 import androidx.lifecycle.MutableLiveData
 import com.example.geoclock.model.Card
@@ -6,7 +6,6 @@ import com.example.geoclock.repos.CardRepository
 import com.example.geoclock.util.Resource
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 import safeCall
@@ -17,12 +16,21 @@ class CardRepositoryFirebase : CardRepository {
 
     override suspend fun addCard(title: String, date: String) = withContext(Dispatchers.IO) {
         safeCall {
-            val cardId = cardRef.document().id
-            val card = Card(cardId, title, date.toString())
-            val addition = cardRef.document(cardId).set(card).await()
-            Resource.Success(addition)
+            val currentUserResult = AuthRepositoryFirebase().currentUser()
+            if (currentUserResult is Resource.Success) {
+                val currentUser = currentUserResult.data
+                val userName = currentUser?.name ?: "Unknown User"
+                val cardId = cardRef.document().id
+                val card = Card(cardId, title, userName, date)
+                val addition = cardRef.document(cardId).set(card).await()
+                Resource.Success(addition)
+            } else {
+                Resource.Error("Failed to fetch current user")
+            }
         }
     }
+
+
 
 
     override suspend fun deleteCard(cardId: String) = withContext(Dispatchers.IO){
@@ -55,16 +63,12 @@ class CardRepositoryFirebase : CardRepository {
         }
     }
 
-    override fun getCardFlow(): Flow<Resource<List<Card>>> {
-        TODO("Not yet implemented")
-    }
-
     override fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>) {
         data.postValue(Resource.Loading())
 
         cardRef.orderBy("title").addSnapshotListener {snapshot, e->
             if(e!=null){
-                data.postValue(Resource.Error(e.localizedMessage))
+                data.postValue(Resource.Error(e.localizedMessage ?: "Unknown error"))
             }
             if(snapshot != null && !snapshot.isEmpty){
                 data.postValue(Resource.Success(snapshot.toObjects(Card::class.java)))

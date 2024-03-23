@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.geoclock.databinding.CardLayoutBinding
 import com.example.geoclock.model.Card
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -35,13 +36,16 @@ class CardsAdapter(private val callBack: CardListener) : RecyclerView.Adapter<Ca
         fun bind(card: Card) {
             binding.textUserName.text = card.userName
 
-            // Convert timestamp string to a formatted date string
-            val dateInMillis = card.date.toLongOrNull()
-            val formattedDate = if (dateInMillis != null) {
-                val sdf = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
-                val calendar = Calendar.getInstance()
-                calendar.timeInMillis = dateInMillis
-                sdf.format(calendar.time)
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            val date = try {
+                dateFormat.parse(card.date)
+            } catch (e: ParseException) {
+                null
+            }
+
+            val formattedDate = if (date != null) {
+                val formattedDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                formattedDateFormat.format(date)
             } else {
                 "Invalid Date"
             }
@@ -57,6 +61,7 @@ class CardsAdapter(private val callBack: CardListener) : RecyclerView.Adapter<Ca
             return false
         }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CardViewHolder {
         val inflater = LayoutInflater.from(parent.context)

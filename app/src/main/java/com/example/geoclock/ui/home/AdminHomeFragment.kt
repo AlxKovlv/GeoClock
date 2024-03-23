@@ -7,8 +7,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.geoclock.R
 import com.example.geoclock.databinding.FragmentHomeAdminBinding
-import com.example.geoclock.databinding.FragmentHomeBinding
-import com.example.geoclock.repos.FirebaseImpl.AuthRepositoryFirebase
+import com.example.geoclock.repos.firebaseImpl.AuthRepositoryFirebase
 import com.example.geoclock.util.autoCleared
 
 class AdminHomeFragment : Fragment() {
