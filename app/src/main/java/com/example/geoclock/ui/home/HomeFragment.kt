@@ -23,8 +23,9 @@ import java.util.Locale
 
 class HomeFragment : Fragment() {
 
-    private var binding : FragmentHomeBinding by autoCleared()
-    private val viewModel : HomeViewModel by viewModels{
+    private var binding: FragmentHomeBinding by autoCleared()
+    private var deletedCard: Card? = null
+    private val viewModel: HomeViewModel by viewModels {
         HomeViewModel.HomeViewModelFactory(AuthRepositoryFirebase(), CardRepositoryFirebase())
     }
 
@@ -38,7 +39,7 @@ class HomeFragment : Fragment() {
             showAddCardDialog()
         }
 
-        binding.btnLogOut.setOnClickListener{
+        binding.btnLogOut.setOnClickListener {
             showLogoutConfirmationDialog()
         }
 
@@ -69,7 +70,7 @@ class HomeFragment : Fragment() {
             .setMessage("Are you sure you want to logout?")
             .setCancelable(false)
             .setPositiveButton("Confirm") { _, _ ->
-                viewModel.sighOut()
+                viewModel.signOut()
                 findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
             }
             .setNegativeButton("Cancel") { dialog, _ ->
@@ -78,26 +79,38 @@ class HomeFragment : Fragment() {
         alertDialogBuilder.show()
     }
 
+    private fun showDeleteCardConfirmationDialog(card: Card) {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+            .setTitle("Delete Card Confirmation")
+            .setMessage("Are you sure you want to delete this card?")
+            .setCancelable(false)
+            .setPositiveButton("Confirm") { _, _ ->
+                deletedCard = card
+                viewModel.deleteCard(card.cardId)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+        alertDialogBuilder.show()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.recycler.adapter = CardsAdapter(object : CardsAdapter.CardListener{
-            override fun onCardClicked(card : Card) {
-
+        binding.recycler.adapter = CardsAdapter(object : CardsAdapter.CardListener {
+            override fun onCardClicked(card: Card) {
+                //TODO Implement card click action
             }
 
-            override fun onCardLongClicked(card : Card) {
-                viewModel.deleteCard(card.cardId)
+            override fun onCardLongClicked(card: Card) {
+                showDeleteCardConfirmationDialog(card)
             }
-        }
+        })
 
-        )
-
-        viewModel.cardStatus.observe(viewLifecycleOwner) {
-            when(it){
+        viewModel.cardStatus.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
                 is Resource.Loading -> {
                     binding.progressBar.isVisible = true
                     binding.btnStart.isEnabled = false
@@ -105,52 +118,53 @@ class HomeFragment : Fragment() {
                 is Resource.Success -> {
                     binding.progressBar.isVisible = false
                     binding.btnStart.isEnabled = true
-                    (binding.recycler.adapter as CardsAdapter).setCards(it.data!!)
+                    (binding.recycler.adapter as CardsAdapter).setCards(resource.data!!)
                 }
                 is Resource.Error -> {
                     binding.progressBar.isVisible = false
                     binding.btnStart.isEnabled = true
-                    Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        viewModel.addCardStatus.observe(viewLifecycleOwner){
-            when(it){
+        viewModel.addCardStatus.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
                 is Resource.Loading -> {
                     binding.progressBar.isVisible = true
                 }
                 is Resource.Success -> {
                     binding.progressBar.isVisible = false
-                    Snackbar.make(binding.coordinator,"Card updated", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.coordinator, "Card updated", Snackbar.LENGTH_SHORT).show()
                 }
                 is Resource.Error -> {
                     binding.progressBar.isVisible = false
-                    Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        viewModel.deleteCardStatus.observe(viewLifecycleOwner) {
-            when(it){
+        viewModel.deleteCardStatus.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
                 is Resource.Loading -> {
                     binding.progressBar.isVisible = true
                 }
                 is Resource.Success -> {
                     binding.progressBar.isVisible = false
-                    Snackbar.make(binding.coordinator,"Card deleted", Snackbar.LENGTH_SHORT).setAction("Undo"){
-                        Toast.makeText(requireContext(), "To implement", Toast.LENGTH_SHORT).show()
-                    }.show()
+                    val snackbar = Snackbar.make(binding.coordinator, "Card deleted", Snackbar.LENGTH_SHORT)
+                    snackbar.setAction("Undo") {
+                        deletedCard?.let { restoredCard ->
+                            viewModel.addCard(restoredCard.title, restoredCard.date, restoredCard.time)
+                            deletedCard = null
+                        }
+                    }
+                    snackbar.show()
                 }
                 is Resource.Error -> {
                     binding.progressBar.isVisible = false
-                    Toast.makeText(requireContext(),it.message,Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT).show()
                 }
             }
         }
-
     }
-
-
-
 }

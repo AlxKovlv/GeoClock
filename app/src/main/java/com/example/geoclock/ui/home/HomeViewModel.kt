@@ -35,7 +35,7 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
             }
         }
     }
-    fun sighOut(){
+    fun signOut(){
         authRep.logout()
     }
 
