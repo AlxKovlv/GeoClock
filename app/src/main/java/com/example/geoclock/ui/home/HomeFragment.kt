@@ -35,30 +35,47 @@ class HomeFragment : Fragment() {
     ): View? {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         binding.btnStart.setOnClickListener {
-            viewModel.getDefaultTitle { defaultTitle ->
-                val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_card_dialog, null)
-                val alertDialogBuilder = AlertDialog.Builder(requireContext())
-                    .setView(dialogView)
-                    .setCancelable(false)
-                    .setPositiveButton("Confirm") { _, _ ->
-                        val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
-                        val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()) // Get current time
-                        viewModel.addCard(defaultTitle, currentDate, currentTime) // Pass current time as time parameter
-                    }
-                    .setNegativeButton("Cancel") { dialog, _ ->
-                        dialog.dismiss()
-                    }
-                alertDialogBuilder.show()
-            }
+            showAddCardDialog()
         }
-
-
 
         binding.btnLogOut.setOnClickListener{
-            viewModel.sighOut()
-            findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+            showLogoutConfirmationDialog()
         }
+
         return binding.root
+    }
+
+    private fun showAddCardDialog() {
+        viewModel.getDefaultTitle { defaultTitle ->
+            val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_card_dialog, null)
+            val alertDialogBuilder = AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .setCancelable(false)
+                .setPositiveButton("Confirm") { _, _ ->
+                    val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
+                    val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+                    viewModel.addCard(defaultTitle, currentDate, currentTime)
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+            alertDialogBuilder.show()
+        }
+    }
+
+    private fun showLogoutConfirmationDialog() {
+        val alertDialogBuilder = AlertDialog.Builder(requireContext())
+            .setTitle("Logout Confirmation")
+            .setMessage("Are you sure you want to logout?")
+            .setCancelable(false)
+            .setPositiveButton("Confirm") { _, _ ->
+                viewModel.sighOut()
+                findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+        alertDialogBuilder.show()
     }
 
 
