@@ -28,7 +28,7 @@ class LoginFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentLoginBinding.inflate(inflater, container, false)
-        binding.noAcountTv.setOnClickListener {
+        binding.noAccountTv.setOnClickListener {
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
         binding.buttonLogin.setOnClickListener {
