@@ -2,7 +2,6 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@drawable/back_02"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.register.RegisterFragment">
@@ -135,9 +134,7 @@
         app:cornerRadius="10dp"
         android:text="Register"
         android:textColor="@android:color/black"
-        app:backgroundTint="@android:color/transparent"
-        app:strokeWidth="1dp"
-        app:strokeColor="@android:color/black"
+        android:background="@drawable/rounded_transparent_background"
         app:layout_constraintEnd_toEndOf="@+id/edxtPassword"
         app:layout_constraintStart_toStartOf="@+id/edxtPassword"
         app:layout_constraintTop_toBottomOf="@+id/edxtPassword" />

@@ -111,4 +111,7 @@
     <color name="mudColor">#462d1d</color>
     <color name="siennaColor">#a0522d</color>
     <color name="dustColor">#ecd6c5</color>
+
+    <!--  Custom  -->
+    <color name="smitransparentGreen">#22217044</color>
 </resources>

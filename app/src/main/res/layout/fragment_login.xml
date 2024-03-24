@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/back_02"
     tools:context=".ui.login.LoginFragment">
 
     <ImageView
@@ -92,9 +91,7 @@
         app:cornerRadius="10dp"
         android:text="Login"
         android:textColor="@android:color/black"
-        app:backgroundTint="@android:color/transparent"
-        app:strokeWidth="1dp"
-        app:strokeColor="@android:color/black"
+        android:background="@drawable/rounded_transparent_background"
         app:layout_constraintEnd_toEndOf="@+id/editTextLoginPass"
         app:layout_constraintStart_toStartOf="@+id/editTextLoginPass"
         app:layout_constraintTop_toBottomOf="@+id/editTextLoginPass" />
