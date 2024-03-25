@@ -14,6 +14,10 @@ class CardsAdapter(private val callBack: CardListener) : RecyclerView.Adapter<Ca
 
     private val cards = ArrayList<Card>()
 
+    fun getCards(): List<Card> {
+        return cards
+    }
+
     fun setCards(cards: Collection<Card>) {
         this.cards.clear()
         this.cards.addAll(cards)
