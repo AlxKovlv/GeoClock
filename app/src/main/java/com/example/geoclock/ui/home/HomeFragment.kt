@@ -1,13 +1,18 @@
 package com.example.geoclock.ui.home
-
+import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Geocoder
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -15,6 +20,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+//import com.example.geoclock.Manifest
 import com.example.geoclock.R
 import com.example.geoclock.databinding.FragmentHomeBinding
 import com.example.geoclock.model.Card
@@ -40,6 +46,9 @@ class HomeFragment : Fragment() {
     private var defaultTitle: String = ""
     private var currentDate: String = ""
     private var currentTime: String = ""
+
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private var photo: Bitmap? = null
     private val viewModel: HomeViewModel by viewModels {
         HomeViewModel.HomeViewModelFactory(AuthRepositoryFirebase(), CardRepositoryFirebase())
     }
@@ -63,6 +72,47 @@ class HomeFragment : Fragment() {
 
         return binding.root
     }
+    private fun dispatchTakePictureIntent() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.CAMERA),
+                REQUEST_IMAGE_CAPTURE
+            )
+        } else {
+            openCamera()
+        }
+    }
+
+    private fun openCamera() {
+        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == REQUEST_IMAGE_CAPTURE) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera()
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
+            photo = data?.extras?.get("data") as Bitmap
+        }
+    }
+
 
 //    private fun showAddCardDialog() {
 //        viewModel.getDefaultTitle { defaultTitle ->
@@ -99,6 +149,9 @@ class HomeFragment : Fragment() {
                 .setPositiveButton(getString(R.string.confirm_dialog)) { _, _ ->
                     val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
                     val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+
+                    //take photo
+                    dispatchTakePictureIntent()
 
                     // Check if location permission is granted
                     if (isLocationPermissionGranted()) {

@@ -77,4 +77,8 @@ dependencies {
 
     //Location services
     implementation ("com.google.android.gms:play-services-location:21.2.0")
+
+    //photo
+    implementation ("androidx.appcompat:appcompat:1.3.0")
+    implementation ("androidx.core:core-ktx:1.7.0")
 }
