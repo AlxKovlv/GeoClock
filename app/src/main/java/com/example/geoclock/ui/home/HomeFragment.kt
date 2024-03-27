@@ -9,6 +9,7 @@ import android.location.Geocoder
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
@@ -16,6 +17,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -49,6 +51,8 @@ class HomeFragment : Fragment() {
 
     private val REQUEST_IMAGE_CAPTURE = 1
     private var photo: Bitmap? = null
+    private  var imageView: ImageView? = null
+
     private val viewModel: HomeViewModel by viewModels {
         HomeViewModel.HomeViewModelFactory(AuthRepositoryFirebase(), CardRepositoryFirebase())
     }
@@ -72,6 +76,7 @@ class HomeFragment : Fragment() {
 
         return binding.root
     }
+    //check permissions
     private fun dispatchTakePictureIntent() {
         if (ContextCompat.checkSelfPermission(
                 requireContext(),
@@ -87,12 +92,13 @@ class HomeFragment : Fragment() {
             openCamera()
         }
     }
-
+        // open camera
     private fun openCamera() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
     }
 
+    //Request Permissions Result
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -105,11 +111,12 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
+    //get photo from camera
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
             photo = data?.extras?.get("data") as Bitmap
+
         }
     }
 
@@ -152,11 +159,12 @@ class HomeFragment : Fragment() {
 
                     //take photo
                     dispatchTakePictureIntent()
+                    //photo
 
                     // Check if location permission is granted
                     if (isLocationPermissionGranted()) {
                         // If permission granted, fetch location and add card
-                        fetchLocationAndAddCard(defaultTitle, currentDate, currentTime)
+                        fetchLocationAndAddCard(defaultTitle, currentDate, currentTime,photo)
                     } else {
                         // If permission not granted, show a message or handle it as needed
                         Toast.makeText(requireContext(), getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show()
@@ -185,7 +193,7 @@ class HomeFragment : Fragment() {
     }
 
     //Function for fetching the users location which only works if the user granted permission for location services
-    private fun fetchLocationAndAddCard(defaultTitle: String, currentDate: String, currentTime: String) {
+    private fun fetchLocationAndAddCard(defaultTitle: String, currentDate: String, currentTime: String,photo: Bitmap?) {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -211,7 +219,7 @@ class HomeFragment : Fragment() {
                                 val address = addresses[0].getAddressLine(0)
                                 val locationString = getString(R.string.location)+address
                                 // Call viewModel.addCard with obtained location
-                                viewModel.addCard(defaultTitle, currentDate, currentTime, locationString)
+                                viewModel.addCard(defaultTitle, currentDate, currentTime, locationString,photo)
                             } else {
                                 Toast.makeText(requireContext(),
                                     getString(R.string.address_not_found), Toast.LENGTH_SHORT).show()
@@ -349,7 +357,7 @@ class HomeFragment : Fragment() {
                         getString(R.string.card_deleted), Snackbar.LENGTH_SHORT)
                     snackbar.setAction(getString(R.string.undo)) {
                         deletedCard?.let { restoredCard ->
-                            viewModel.addCard(restoredCard.title, restoredCard.date, restoredCard.time,restoredCard.location)
+                            viewModel.addCard(restoredCard.title, restoredCard.date, restoredCard.time,restoredCard.location,photo)
                             deletedCard = null
                         }
                     }

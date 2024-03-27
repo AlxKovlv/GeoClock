@@ -1,5 +1,6 @@
 package com.example.geoclock.repos.firebaseImpl
 
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import com.example.geoclock.model.Card
 import com.example.geoclock.repos.CardRepository
@@ -34,7 +35,7 @@ class CardRepositoryFirebase : CardRepository {
 //        }
 //    }
 
-    override suspend fun addCard(title: String, date: String, time: String, location: String) = withContext(Dispatchers.IO) {
+    override suspend fun addCard(title: String, date: String, time: String, location: String,photo: Bitmap?) = withContext(Dispatchers.IO) {
         safeCall {
             val currentUserResult = AuthRepositoryFirebase().currentUser()
             if (currentUserResult is Resource.Success) {
