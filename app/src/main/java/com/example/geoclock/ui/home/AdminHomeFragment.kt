@@ -36,6 +36,4 @@ class AdminHomeFragment : Fragment() {
 
     }
 
-
-
 }

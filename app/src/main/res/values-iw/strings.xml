@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GeoClock</string>
+    <string name="cancel_dialog">בטל</string>
+    <string name="location">"מיקום: "</string>
+    <string name="logout_confirmation">אישור התנתקות</string>
+    <string name="are_you_sure_you_want_to_logout">האם אתה בטוח שאתה רוצה להתנתק?</string>
+    <string name="delete_card_confirmation">אישור מחיקת כרטיס</string>
+    <string name="delete_card_message">האם אתה בטוח שאתה רוצה למחוק כרטיס זה?</string>
+    <string name="card_updated">כרטיס עודכן</string>
+    <string name="card_deleted">כרטיס נמחק</string>
+    <string name="undo">חזור</string>
+    <string name="address_not_found">כתובת לא נמצאה</string>
+    <string name="error_fetching_address">טעות במציאת הכתובת</string>
+    <string name="unable_to_fetch_location">לא מצליח למצוא מיקום</string>
+    <string name="location_fetch_failed">מציאת מיקום נכשלה</string>
+    <string name="location_permission_denied">לא ניתנה הרשאת מיקום</string>
+    <string name="login_successful">התחברות בהצלחה</string>
+    <string name="registration_successful">הרשמה בהצלחה</string>
+    <string name="sign_up">הירשם</string>
+    <string name="name">שם</string>
+    <string name="email">אימייל</string>
+    <string name="password">סיסמה</string>
+    <string name="phone_no">מספר פלאפון</string>
+    <string name="register_btn">הירשם</string>
+    <string name="sign_in">התחבר</string>
+    <string name="login_btn">התחבר</string>
+    <string name="new_user_registration">הרשמת משתמש חדש</string>
+    <string name="manager_dashboard">לוח מנהל</string>
+    <string name="username">שם משתמש</string>
+    <string name="start_btn">התחל</string>
+    <string name="logout_btn">התנתק</string>
+    <string name="time">זמן:</string>
+    <string name="date">תאריך:</string>
+    <string name="are_you_sure_you_want_to_start">האם אתה בטוח שברצונך להתחיל?</string>
+    <string name="confirm_dialog">אשר</string>
+</resources>

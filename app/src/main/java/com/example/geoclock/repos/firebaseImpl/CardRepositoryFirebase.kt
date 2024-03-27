@@ -6,22 +6,42 @@ import com.example.geoclock.repos.CardRepository
 import com.example.geoclock.util.Resource
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+
+import kotlinx.coroutines.launch
+
 import safeCall
 
 class CardRepositoryFirebase : CardRepository {
 
     private val cardRef = FirebaseFirestore.getInstance().collection("cards")
 
-    override suspend fun addCard(title: String, date: String, time: String) = withContext(Dispatchers.IO) {
+//    override suspend fun addCard(title: String, date: String, time: String) = withContext(Dispatchers.IO) {
+//        safeCall {
+//            val currentUserResult = AuthRepositoryFirebase().currentUser()
+//            if (currentUserResult is Resource.Success) {
+//                val currentUser = currentUserResult.data
+//                val userName = currentUser?.name ?: "Unknown User"
+//                val cardId = cardRef.document().id
+//                val card = Card(cardId, title, userName, date, time) // Include time parameter
+//                val addition = cardRef.document(cardId).set(card).await()
+//                Resource.Success(addition)
+//            } else {
+//                Resource.Error("Failed to fetch current user")
+//            }
+//        }
+//    }
+
+    override suspend fun addCard(title: String, date: String, time: String, location: String) = withContext(Dispatchers.IO) {
         safeCall {
             val currentUserResult = AuthRepositoryFirebase().currentUser()
             if (currentUserResult is Resource.Success) {
                 val currentUser = currentUserResult.data
                 val userName = currentUser?.name ?: "Unknown User"
                 val cardId = cardRef.document().id
-                val card = Card(cardId, title, userName, date, time) // Include time parameter
+                val card = Card(cardId, title, userName, date, time, location) // Include location parameter
                 val addition = cardRef.document(cardId).set(card).await()
                 Resource.Success(addition)
             } else {
@@ -29,6 +49,7 @@ class CardRepositoryFirebase : CardRepository {
             }
         }
     }
+
 
     override suspend fun deleteCard(cardId: String) = withContext(Dispatchers.IO){
         safeCall {
@@ -60,18 +81,61 @@ class CardRepositoryFirebase : CardRepository {
         }
     }
 
+//Old way of getting cards which gets all cards no matter which user it is
+//    override fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>) {
+//        data.postValue(Resource.Loading())
+//
+//        cardRef.orderBy("time").addSnapshotListener {snapshot, e->
+//            if(e!=null){
+//                data.postValue(Resource.Error(e.localizedMessage ?: "Unknown error"))
+//            }
+//            if(snapshot != null && !snapshot.isEmpty){
+//                data.postValue(Resource.Success(snapshot.toObjects(Card::class.java)))
+//            }
+//            else{
+//                data.postValue(Resource.Error("No data"))
+//            }
+//        }
+//    }
+
+
+    //My modified version
     override fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>) {
         data.postValue(Resource.Loading())
 
-        cardRef.orderBy("time").addSnapshotListener {snapshot, e->
-            if(e!=null){
-                data.postValue(Resource.Error(e.localizedMessage ?: "Unknown error"))
+        // Get the current user to filter cards by their name
+        GlobalScope.launch {
+            val currentUserResult = withContext(Dispatchers.IO) {
+                AuthRepositoryFirebase().currentUser()
             }
-            if(snapshot != null && !snapshot.isEmpty){
-                data.postValue(Resource.Success(snapshot.toObjects(Card::class.java)))
-            }
-            else{
-                data.postValue(Resource.Error("No data"))
+            if (currentUserResult is Resource.Success) {
+                val currentUser = currentUserResult.data
+                val userName = currentUser?.name ?: "Unknown User"
+
+                // Fetch all cards from Firestore
+                cardRef.orderBy("time")
+                    .addSnapshotListener { snapshot, e ->
+                        if (e != null) {
+                            data.postValue(Resource.Error(e.localizedMessage ?: "Unknown error"))
+                        }
+                        if (snapshot != null && !snapshot.isEmpty) {
+                            // Filter cards based on the current user's name
+                            if (!userName.contains("admin", ignoreCase = true)){
+                                val filteredCards = snapshot.documents.mapNotNull { document ->
+                                    document.toObject(Card::class.java)?.takeIf { it.userName == userName }
+                                }
+                                data.postValue(Resource.Success(filteredCards))
+                            }
+                            else{//Admin user
+                                data.postValue(Resource.Success(snapshot.toObjects(Card::class.java)))
+                            }
+
+                        } else {
+                            data.postValue(Resource.Error("No data"))
+                        }
+                    }
+            } else {
+                data.postValue(Resource.Error("Failed to fetch current user"))
             }
         }
     }

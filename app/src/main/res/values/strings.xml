@@ -1,3 +1,36 @@
 <resources>
     <string name="app_name">GeoClock</string>
+    <string name="confirm_dialog">Confirm</string>
+    <string name="cancel_dialog">Cancel</string>
+    <string name="location">"Location: "</string>
+    <string name="logout_confirmation">Logout Confirmation</string>
+    <string name="are_you_sure_you_want_to_logout">Are you sure you want to logout?</string>
+    <string name="delete_card_confirmation">Delete Card Confirmation</string>
+    <string name="delete_card_message">Are you sure you want to delete this card?</string>
+    <string name="card_updated">Card updated</string>
+    <string name="card_deleted">Card deleted</string>
+    <string name="undo">Undo</string>
+    <string name="address_not_found">Address not found</string>
+    <string name="error_fetching_address">Error fetching address</string>
+    <string name="unable_to_fetch_location">Unable to fetch location</string>
+    <string name="location_fetch_failed">"Location fetch failed: "</string>
+    <string name="location_permission_denied">Location permission denied</string>
+    <string name="login_successful">Login successful</string>
+    <string name="registration_successful">Registration successful</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="phone_no">Phone No</string>
+    <string name="register_btn">Register</string>
+    <string name="sign_in">Sign In</string>
+    <string name="login_btn">Login</string>
+    <string name="new_user_registration">New user registration</string>
+    <string name="manager_dashboard">Manager Dashboard</string>
+    <string name="username">Username</string>
+    <string name="start_btn">Start</string>
+    <string name="logout_btn">Logout</string>
+    <string name="time">Time:</string>
+    <string name="date">Date:</string>
+    <string name="are_you_sure_you_want_to_start">Are you sure you want to start?</string>
 </resources>
