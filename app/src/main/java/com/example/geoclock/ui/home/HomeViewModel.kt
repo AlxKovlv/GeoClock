@@ -39,13 +39,24 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
         authRep.logout()
     }
 
-    fun addCard(title: String, date: String, time: String) {
+//    fun addCard(title: String, date: String, time: String) {
+//        viewModelScope.launch {
+//            if (title.isEmpty()) {
+//                _addCardStatus.postValue(Resource.Error("Empty title"))
+//            } else {
+//                _addCardStatus.postValue(Resource.Loading())
+//                _addCardStatus.postValue(cardRep.addCard(title, date, time))
+//            }
+//        }
+//    }
+
+    fun addCard(title: String, date: String, time: String, location: String) {
         viewModelScope.launch {
             if (title.isEmpty()) {
                 _addCardStatus.postValue(Resource.Error("Empty title"))
             } else {
                 _addCardStatus.postValue(Resource.Loading())
-                _addCardStatus.postValue(cardRep.addCard(title, date, time))
+                _addCardStatus.postValue(cardRep.addCard(title, date, time, location))
             }
         }
     }

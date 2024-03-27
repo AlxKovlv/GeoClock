@@ -18,14 +18,30 @@ class CardRepositoryFirebase : CardRepository {
 
     private val cardRef = FirebaseFirestore.getInstance().collection("cards")
 
-    override suspend fun addCard(title: String, date: String, time: String) = withContext(Dispatchers.IO) {
+//    override suspend fun addCard(title: String, date: String, time: String) = withContext(Dispatchers.IO) {
+//        safeCall {
+//            val currentUserResult = AuthRepositoryFirebase().currentUser()
+//            if (currentUserResult is Resource.Success) {
+//                val currentUser = currentUserResult.data
+//                val userName = currentUser?.name ?: "Unknown User"
+//                val cardId = cardRef.document().id
+//                val card = Card(cardId, title, userName, date, time) // Include time parameter
+//                val addition = cardRef.document(cardId).set(card).await()
+//                Resource.Success(addition)
+//            } else {
+//                Resource.Error("Failed to fetch current user")
+//            }
+//        }
+//    }
+
+    override suspend fun addCard(title: String, date: String, time: String, location: String) = withContext(Dispatchers.IO) {
         safeCall {
             val currentUserResult = AuthRepositoryFirebase().currentUser()
             if (currentUserResult is Resource.Success) {
                 val currentUser = currentUserResult.data
                 val userName = currentUser?.name ?: "Unknown User"
                 val cardId = cardRef.document().id
-                val card = Card(cardId, title, userName, date, time) // Include time parameter
+                val card = Card(cardId, title, userName, date, time, location) // Include location parameter
                 val addition = cardRef.document(cardId).set(card).await()
                 Resource.Success(addition)
             } else {
@@ -33,6 +49,7 @@ class CardRepositoryFirebase : CardRepository {
             }
         }
     }
+
 
     override suspend fun deleteCard(cardId: String) = withContext(Dispatchers.IO){
         safeCall {

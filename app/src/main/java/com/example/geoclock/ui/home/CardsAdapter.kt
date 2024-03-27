@@ -59,6 +59,8 @@ class CardsAdapter(private val callBack: CardListener) : RecyclerView.Adapter<Ca
             // Bind
             binding.textDate.text = "Date: $formattedDate"
             binding.textTime.text = "Time: ${card.time}"
+            //handling location
+            binding.textLocation.text= "${card.location}"
         }
 
         override fun onClick(v: View?) {
