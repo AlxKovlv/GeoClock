@@ -33,4 +33,6 @@
     <string name="time">Time:</string>
     <string name="date">Date:</string>
     <string name="are_you_sure_you_want_to_start">Are you sure you want to start?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -221,7 +221,7 @@ class HomeFragment : Fragment() {
             }
 
             override fun onCardLongClicked(card: Card) {
-                showDeleteCardConfirmationDialog(card)
+                findNavController().navigate(R.id.action_homeFragment_to_photoFragment)
             }
         })
 
