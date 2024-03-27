@@ -31,7 +31,7 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
                 val defaultTitle = defaultTitleResult.data?.title ?: "Default Title"
                 callback(defaultTitle)
             } else {
-                callback("Default Title")
+                callback("Default Title")//Default title
             }
         }
     }

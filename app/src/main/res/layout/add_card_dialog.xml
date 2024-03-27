@@ -8,7 +8,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Are you sure you want to start?"
+        android:text="@string/are_you_sure_you_want_to_start"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:gravity="center"

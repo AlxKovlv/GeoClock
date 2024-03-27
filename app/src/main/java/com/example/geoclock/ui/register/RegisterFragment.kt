@@ -47,7 +47,8 @@ class RegisterFragment : Fragment() {
                     binding.userRegisterButton.isEnabled = false
                 }
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(),"Registration successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),
+                        getString(R.string.registration_successful), Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_registerFragment_to_homeFragment) //might change to login
                 }
                 is Resource.Error -> {

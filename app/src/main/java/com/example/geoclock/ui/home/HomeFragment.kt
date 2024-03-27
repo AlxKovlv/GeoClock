@@ -96,7 +96,7 @@ class HomeFragment : Fragment() {
             val alertDialogBuilder = AlertDialog.Builder(requireContext())
                 .setView(dialogView)
                 .setCancelable(false)
-                .setPositiveButton("Confirm") { _, _ ->
+                .setPositiveButton(getString(R.string.confirm_dialog)) { _, _ ->
                     val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
                     val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
 
@@ -106,10 +106,10 @@ class HomeFragment : Fragment() {
                         fetchLocationAndAddCard(defaultTitle, currentDate, currentTime)
                     } else {
                         // If permission not granted, show a message or handle it as needed
-                        Toast.makeText(requireContext(), "Location permission not granted", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show()
                     }
                 }
-                .setNegativeButton("Cancel") { dialog, _ ->
+                .setNegativeButton(getString(R.string.cancel_dialog)) { dialog, _ ->
                     dialog.dismiss()
                 }
             alertDialogBuilder.show()
@@ -121,7 +121,8 @@ class HomeFragment : Fragment() {
             if (isGranted) {
                 // Permission is granted, do nothing here, the location will be fetched when needed
             } else {
-                Toast.makeText(requireContext(), "Location permission denied", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -155,36 +156,40 @@ class HomeFragment : Fragment() {
                         if (addresses != null) {
                             if (addresses.isNotEmpty()) {
                                 val address = addresses[0].getAddressLine(0)
-                                val locationString = "Location: $address"
+                                val locationString = getString(R.string.location)+address
                                 // Call viewModel.addCard with obtained location
                                 viewModel.addCard(defaultTitle, currentDate, currentTime, locationString)
                             } else {
-                                Toast.makeText(requireContext(), "Address not found", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(),
+                                    getString(R.string.address_not_found), Toast.LENGTH_SHORT).show()
                             }
                         }
                     } catch (e: IOException) {
-                        Toast.makeText(requireContext(), "Error fetching address", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(),
+                            getString(R.string.error_fetching_address), Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
                     }
                 } ?: run {
-                    Toast.makeText(requireContext(), "Unable to fetch location", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),
+                        getString(R.string.unable_to_fetch_location), Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(requireContext(), "Location fetch failed: ${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.location_fetch_failed)+"${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 
     private fun showLogoutConfirmationDialog() {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-            .setTitle("Logout Confirmation")
-            .setMessage("Are you sure you want to logout?")
+            .setTitle(getString(R.string.logout_confirmation))
+            .setMessage(getString(R.string.are_you_sure_you_want_to_logout))
             .setCancelable(false)
-            .setPositiveButton("Confirm") { _, _ ->
+            .setPositiveButton(getString(R.string.confirm_dialog)) { _, _ ->
                 viewModel.signOut()
                 findNavController().navigate(R.id.action_homeFragment_to_loginFragment)
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton(getString(R.string.cancel_dialog)) { dialog, _ ->
                 dialog.dismiss()
             }
         alertDialogBuilder.show()
@@ -192,14 +197,14 @@ class HomeFragment : Fragment() {
 
     private fun showDeleteCardConfirmationDialog(card: Card) {
         val alertDialogBuilder = AlertDialog.Builder(requireContext())
-            .setTitle("Delete Card Confirmation")
-            .setMessage("Are you sure you want to delete this card?")
+            .setTitle(getString(R.string.delete_card_confirmation))
+            .setMessage(getString(R.string.delete_card_message))
             .setCancelable(false)
-            .setPositiveButton("Confirm") { _, _ ->
+            .setPositiveButton(getString(R.string.confirm_dialog)) { _, _ ->
                 deletedCard = card
                 viewModel.deleteCard(card.cardId)
             }
-            .setNegativeButton("Cancel") { dialog, _ ->
+            .setNegativeButton(getString(R.string.cancel_dialog)) { dialog, _ ->
                 dialog.dismiss()
             }
         alertDialogBuilder.show()
@@ -270,7 +275,8 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     binding.progressBar.isVisible = false
-                    Snackbar.make(binding.coordinator, "Card updated", Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(binding.coordinator,
+                        getString(R.string.card_updated), Snackbar.LENGTH_SHORT).show()
                 }
                 is Resource.Error -> {
                     binding.progressBar.isVisible = false
@@ -286,8 +292,9 @@ class HomeFragment : Fragment() {
                 }
                 is Resource.Success -> {
                     binding.progressBar.isVisible = false
-                    val snackbar = Snackbar.make(binding.coordinator, "Card deleted", Snackbar.LENGTH_SHORT)
-                    snackbar.setAction("Undo") {
+                    val snackbar = Snackbar.make(binding.coordinator,
+                        getString(R.string.card_deleted), Snackbar.LENGTH_SHORT)
+                    snackbar.setAction(getString(R.string.undo)) {
                         deletedCard?.let { restoredCard ->
                             viewModel.addCard(restoredCard.title, restoredCard.date, restoredCard.time,restoredCard.location)
                             deletedCard = null

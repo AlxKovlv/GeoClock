@@ -52,7 +52,8 @@ class LoginFragment : Fragment() {
                 }
 
                 is Resource.Success -> {
-                    Toast.makeText(requireContext(), "Login successful", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(),
+                        getString(R.string.login_successful), Toast.LENGTH_SHORT).show()
                     findNavController().navigate(R.id.action_loginFragment_to_homeFragment) //to login?
                 }
 
