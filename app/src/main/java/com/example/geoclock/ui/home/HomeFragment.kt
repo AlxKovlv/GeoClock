@@ -32,12 +32,10 @@ import com.example.geoclock.util.Resource
 import com.example.geoclock.util.autoCleared
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
 import com.google.android.material.snackbar.Snackbar
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.Base64
 import java.util.Date
 import java.util.Locale
 
@@ -53,7 +51,7 @@ class HomeFragment : Fragment() {
 
     private val REQUEST_IMAGE_CAPTURE = 1
     private var photo: String = ""
-    private  var imageView: ImageView? = null
+
 
     private val viewModel: HomeViewModel by viewModels {
         HomeViewModel.HomeViewModelFactory(AuthRepositoryFirebase(), CardRepositoryFirebase())
@@ -293,7 +291,20 @@ class HomeFragment : Fragment() {
             }
 
             override fun onCardLongClicked(card: Card) {
-                findNavController().navigate(R.id.action_homeFragment_to_photoFragment)
+
+                val bundle = Bundle()
+                bundle.putString("id",card.cardId.toString())
+                bundle.putString("loc",card.location.toString())
+                bundle.putString("time", card.time.toString())
+                bundle.putString("date",card.date.toString())
+                bundle.putString("title",card.title.toString())
+                bundle.putString("user",card.userName.toString())
+
+                val fragment = photoFragment()
+                fragment.arguments = bundle
+
+                findNavController().navigate(R.id.action_homeFragment_to_photoFragment,bundle)
+
             }
         })
 

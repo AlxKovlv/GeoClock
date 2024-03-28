@@ -1,11 +1,23 @@
 package com.example.geoclock.ui.home
 
 import android.os.Bundle
+import android.util.Base64
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.example.geoclock.R
+import com.example.geoclock.databinding.FragmentHomeBinding
+import com.example.geoclock.databinding.FragmentPhotoBinding
+import com.example.geoclock.util.autoCleared
+import com.example.geoclock.repos.AuthRepository
+import com.example.geoclock.repos.CardRepository
+import com.example.geoclock.repos.firebaseImpl.AuthRepositoryFirebase
+import com.example.geoclock.repos.firebaseImpl.CardRepositoryFirebase
+
+
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +33,9 @@ class photoFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
+    private var binding: FragmentPhotoBinding by autoCleared()
+    //val viewModel: HomeViewModel by activityViewModels()
+    // val key = arguments?.getString("key")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +50,25 @@ class photoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_photo, container, false)
+        binding = FragmentPhotoBinding.inflate(inflater, container, false)
+        //get arguments from prev fragment
+        val args = this.arguments
+        val id = args?.get("id")
+        val loc = args?.get("loc")
+        val time = args?.get("time")
+        val date = args?.get("date")
+        val title = args?.get("title")
+        val user = args?.get("user")
+
+        //show  arguments in UI
+        binding.id.text = ("ID: " +id.toString())
+        binding.loc.text = ("Location: " +loc.toString())
+        binding.time.text = ("Time & Date: " +time.toString()+" "+date.toString())
+        binding.title.text = ("Title: "+title.toString())
+        binding.user.text=("User: " +user.toString())
+
+        return binding.root
+
     }
 
     companion object {
