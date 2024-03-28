@@ -34,8 +34,10 @@ import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 
 import com.google.android.material.snackbar.Snackbar
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.Base64
 import java.util.Date
 import java.util.Locale
 
@@ -50,7 +52,7 @@ class HomeFragment : Fragment() {
     private var currentTime: String = ""
 
     private val REQUEST_IMAGE_CAPTURE = 1
-    private var photo: Bitmap? = null
+    private var photo: String = ""
     private  var imageView: ImageView? = null
 
     private val viewModel: HomeViewModel by viewModels {
@@ -115,7 +117,16 @@ class HomeFragment : Fragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-            photo = data?.extras?.get("data") as Bitmap
+
+
+            var photo_As_bitmap: Bitmap=data?.extras?.get("data") as Bitmap
+            //photo to ARRAY
+            val byteArrayOutputStream = ByteArrayOutputStream()
+            photo_As_bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
+            val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+
+            //ARRAY TO STRING
+            photo =  android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT).toString()
 
         }
     }
@@ -193,7 +204,7 @@ class HomeFragment : Fragment() {
     }
 
     //Function for fetching the users location which only works if the user granted permission for location services
-    private fun fetchLocationAndAddCard(defaultTitle: String, currentDate: String, currentTime: String,photo: Bitmap?) {
+    private fun fetchLocationAndAddCard(defaultTitle: String, currentDate: String, currentTime: String,photo: String) {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION

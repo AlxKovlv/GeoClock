@@ -61,7 +61,7 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
 //            }
 //        }
 //    }
-fun addCard(title: String, date: String, time: String, location: String,photo: Bitmap?) {
+fun addCard(title: String, date: String, time: String, location: String,photo: String) {
     viewModelScope.launch {
         if (title.isEmpty()) {
             _addCardStatus.postValue(Resource.Error("Empty title"))

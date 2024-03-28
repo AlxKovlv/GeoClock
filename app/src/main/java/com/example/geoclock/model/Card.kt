@@ -11,5 +11,5 @@ data class Card(
     val location: String = "", // Add location field
     val latitude: Double = 0.0,
     val longitude: Double = 0.0,
-    val photo: Bitmap?=null //add photo field
+    val photo: String = "" //add photo field -> change to String
 ){}
