@@ -33,11 +33,18 @@ import com.example.geoclock.util.autoCleared
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlinx.coroutines.*
+import kotlinx.coroutines.android.awaitFrame
+import kotlinx.coroutines.delay as delay
+
 
 class HomeFragment : Fragment() {
 
@@ -65,8 +72,8 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        binding.btnStart.setOnClickListener {
-            showAddCardDialog()
+        binding.btnStart.setOnClickListener  {
+          showAddCardDialog()
         }
 
         binding.btnLogOut.setOnClickListener {
@@ -116,16 +123,15 @@ class HomeFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
 
-
-            var photo_As_bitmap: Bitmap=data?.extras?.get("data") as Bitmap
+            var photo_As_bitmap: Bitmap = data?.extras?.get("data") as Bitmap
             //photo to ARRAY
-            val byteArrayOutputStream = ByteArrayOutputStream()
-            photo_As_bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream)
-            val byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+            var byteArrayOutputStream = ByteArrayOutputStream()
+            photo_As_bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream)
+            var byteArray: ByteArray = byteArrayOutputStream.toByteArray()
+
 
             //ARRAY TO STRING
             photo =  android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT).toString()
-
         }
     }
 
@@ -156,7 +162,8 @@ class HomeFragment : Fragment() {
     }
 
     //Function for adding a card with location
-    private fun showAddCardDialog() {
+    private  fun showAddCardDialog() {
+
         viewModel.getDefaultTitle { defaultTitle ->
             val dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.add_card_dialog, null)
             val alertDialogBuilder = AlertDialog.Builder(requireContext())
@@ -168,7 +175,9 @@ class HomeFragment : Fragment() {
 
                     //take photo
                     dispatchTakePictureIntent()
-                    //photo
+
+                    Toast.makeText(requireContext(), "keep runging", Toast.LENGTH_SHORT).show()
+
 
                     // Check if location permission is granted
                     if (isLocationPermissionGranted()) {
@@ -299,6 +308,7 @@ class HomeFragment : Fragment() {
                 bundle.putString("date",card.date.toString())
                 bundle.putString("title",card.title.toString())
                 bundle.putString("user",card.userName.toString())
+                bundle.putString("photo",card.photo.toString())
 
                 val fragment = photoFragment()
                 fragment.arguments = bundle
