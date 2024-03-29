@@ -52,7 +52,6 @@
     <color name="moneyGreenColor">#86c67c</color>
     <color name="honeydewColor">#d8ffe7</color>
     <color name="limeColor">#38ed38</color>
-    <color name="cardTableColor">#31493F</color>
     <!--  Reds  -->
     <color name="salmonColor">#e9575f</color>
     <color name="brickRedColor">#971b10</color>
@@ -113,6 +112,7 @@
     <color name="dustColor">#ecd6c5</color>
 
     <!--  Custom  -->
+    <color name="my_primary_color">#2B4238</color>
     <color name="semitransparentGreen">#22217044</color>
     <color name="transparent">#00FFFFFF</color>
 </resources>

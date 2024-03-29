@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="@string/reports_fragment_headline"
         android:gravity="center"
+        android:textColor="@color/my_primary_color"
         android:textSize="20sp"/>
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,8 +26,8 @@
             android:layout_height="match_parent"
             android:text="@string/start_date"
             android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:background="@drawable/custom_text_input_layout_bg"
+            android:textColor="@color/my_primary_color"
+            android:background="@drawable/custom_button"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:id="@+id/btn_start_date"
@@ -39,7 +40,7 @@
             android:textStyle="bold"
             android:gravity="center"
             android:textSize="20sp"
-            android:textColor="@android:color/black"
+            android:textColor="@color/my_primary_color"
 
             android:layout_weight=".3"/>
 
@@ -48,8 +49,8 @@
             android:layout_height="match_parent"
             android:text="@string/end_date"
             android:textSize="16sp"
-            android:textColor="@android:color/black"
-            android:background="@drawable/custom_text_input_layout_bg"
+            android:textColor="@color/my_primary_color"
+            android:background="@drawable/custom_button"
             android:layout_margin="5dp"
             android:layout_weight="1"
             android:id="@+id/btn_end_date"
@@ -61,8 +62,8 @@
         android:layout_height="wrap_content"
         android:text="@string/show_cards"
         android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:background="@drawable/custom_text_input_layout_bg"
+        android:textColor="@color/my_primary_color"
+        android:background="@drawable/custom_button"
         android:layout_marginVertical="8dp"
         android:id="@+id/btn_show_cards"
         />
@@ -79,9 +80,8 @@
         android:layout_height="wrap_content"
         android:text="Back"
         android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:background="@drawable/custom_text_input_layout_bg"
-        android:layout_marginTop="5dp"
+        android:textColor="@color/my_primary_color"
+        android:background="@drawable/custom_button"        android:layout_marginTop="5dp"
         android:id="@+id/btn_back"/>
 
 </LinearLayout>

@@ -48,6 +48,7 @@
         tools:layout="@layout/fragment_reports" >
         <action
             android:id="@+id/action_reportsFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment" />
     </fragment>
 </navigation>
