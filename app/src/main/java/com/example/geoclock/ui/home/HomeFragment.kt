@@ -243,6 +243,22 @@ class HomeFragment : Fragment() {
             }
         })
 
+        // Greet the user: change title string to username
+        viewModel.fetchCurrentUser()
+        viewModel.currentUser.observe(viewLifecycleOwner) { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    val userName = resource.data?.name ?: "User"
+                    binding.homeTitle.text = "Hello, $userName" // Update TextView with user name
+                }
+                is Resource.Error -> {
+                    Toast.makeText(requireContext(), resource.message ?: "Error occurred", Toast.LENGTH_SHORT).show()
+                }
+                is Resource.Loading -> {
+                    binding.homeTitle.text = "Hello..."
+                }
+            }
+        }
         //Interface for adding swipe to delete functionality
         ItemTouchHelper(object : ItemTouchHelper.Callback(){
             override fun getMovementFlags(
