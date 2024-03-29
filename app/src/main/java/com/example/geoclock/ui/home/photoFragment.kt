@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.example.geoclock.R
 import com.example.geoclock.databinding.FragmentHomeBinding
@@ -65,8 +66,14 @@ class photoFragment : Fragment() {
         val title = args?.get("title")
         val user = args?.get("user")
 
-        var photo_as_string = args?.get("photo")
-        val photo: Bitmap = stringToBitmap(photo_as_string.toString())
+        try {
+            var photo_as_string = args?.get("photo")
+            val photo: Bitmap = stringToBitmap(photo_as_string.toString())
+            binding.photo.setImageBitmap(photo)
+        }catch (e: Exception){
+            Toast.makeText(requireContext(), "there is no photo to show", Toast.LENGTH_SHORT).show()
+        }
+
 
 
         //show  arguments in UI
@@ -75,7 +82,7 @@ class photoFragment : Fragment() {
         binding.time.text = ("Time & Date: " +time.toString()+" "+date.toString())
         binding.title.text = ("Title: "+title.toString())
         binding.user.text=("User: " +user.toString())
-        binding.photo.setImageBitmap(photo)
+
 
         return binding.root
 

@@ -55,9 +55,8 @@ class HomeFragment : Fragment() {
     private var defaultTitle: String = ""
     private var currentDate: String = ""
     private var currentTime: String = ""
-
-    private val REQUEST_IMAGE_CAPTURE = 1
     private var photo: String = ""
+
 
 
     private val viewModel: HomeViewModel by viewModels {
@@ -83,58 +82,6 @@ class HomeFragment : Fragment() {
 
         return binding.root
     }
-    //check permissions
-    private fun dispatchTakePictureIntent() {
-        if (ContextCompat.checkSelfPermission(
-                requireContext(),
-                Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.CAMERA),
-                REQUEST_IMAGE_CAPTURE
-            )
-        } else {
-            openCamera()
-        }
-    }
-        // open camera
-    private fun openCamera() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-    }
-
-    //Request Permissions Result
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_IMAGE_CAPTURE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                openCamera()
-            }
-        }
-    }
-    //get photo from camera
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK) {
-
-            var photo_As_bitmap: Bitmap = data?.extras?.get("data") as Bitmap
-            //photo to ARRAY
-            var byteArrayOutputStream = ByteArrayOutputStream()
-            photo_As_bitmap.compress(Bitmap.CompressFormat.JPEG, 30, byteArrayOutputStream)
-            var byteArray: ByteArray = byteArrayOutputStream.toByteArray()
-
-
-            //ARRAY TO STRING
-            photo =  android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT).toString()
-        }
-    }
-
 
 //    private fun showAddCardDialog() {
 //        viewModel.getDefaultTitle { defaultTitle ->
@@ -172,11 +119,6 @@ class HomeFragment : Fragment() {
                 .setPositiveButton(getString(R.string.confirm_dialog)) { _, _ ->
                     val currentDate = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(Date())
                     val currentTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-
-                    //take photo
-                    dispatchTakePictureIntent()
-
-                    Toast.makeText(requireContext(), "keep runging", Toast.LENGTH_SHORT).show()
 
 
                     // Check if location permission is granted
@@ -308,7 +250,9 @@ class HomeFragment : Fragment() {
                 bundle.putString("date",card.date.toString())
                 bundle.putString("title",card.title.toString())
                 bundle.putString("user",card.userName.toString())
-                bundle.putString("photo",card.photo.toString())
+                if (photo!=null){
+                    bundle.putString("photo",card.photo.toString())
+                }
 
                 val fragment = photoFragment()
                 fragment.arguments = bundle
