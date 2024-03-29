@@ -2,6 +2,7 @@ package com.example.geoclock.ui.home
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
@@ -10,6 +11,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import com.example.geoclock.R
 import com.example.geoclock.databinding.FragmentHomeBinding
@@ -82,6 +84,8 @@ class photoFragment : Fragment() {
         binding.time.text = ("Time & Date: " +time.toString()+" "+date.toString())
         binding.title.text = ("Title: "+title.toString())
         binding.user.text=("User: " +user.toString())
+
+        binding.photo.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_gallety))
 
 
         return binding.root
