@@ -71,12 +71,13 @@
             <com.google.android.material.button.MaterialButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Button"
+                android:text="@string/reports"
                 android:textColor="@android:color/black"
                 android:background="@drawable/custom_text_input_layout_bg"
                 android:textSize="16sp"
                 android:layout_margin="5dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:id="@+id/btn_reports"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_log_out"

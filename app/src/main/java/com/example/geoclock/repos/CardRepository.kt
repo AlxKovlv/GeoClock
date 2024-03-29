@@ -14,5 +14,6 @@ interface CardRepository {
     suspend fun setDate(cardId:String, date:String) : Resource<Void>
     suspend fun getCards() : Resource<List<Card>>
     fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>)
+    suspend fun getCardsInRange(startDate: String, endDate: String): Resource<List<Card>>
 
 }

@@ -25,7 +25,7 @@ class AdminHomeFragment : Fragment() {
         binding = FragmentHomeAdminBinding.inflate(inflater, container, false)
         binding.btnLogOut.setOnClickListener{
             viewModel.sighOut()
-            findNavController().navigate(R.id.action_aminHomeFragment_to_loginFragment)
+            //findNavController().navigate(R.id.action_aminHomeFragment_to_loginFragment)
         }
         return binding.root
     }

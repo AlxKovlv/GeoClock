@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.reports.ReportsFragment"
+    android:padding="20dp"
+    android:orientation="vertical">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/reports_fragment_headline"
+        android:gravity="center"
+        android:textSize="20sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginVertical="10dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/start_date"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/custom_text_input_layout_bg"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:id="@+id/btn_start_date"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="-"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:textColor="@android:color/black"
+
+            android:layout_weight=".3"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="@string/end_date"
+            android:textSize="16sp"
+            android:textColor="@android:color/black"
+            android:background="@drawable/custom_text_input_layout_bg"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:id="@+id/btn_end_date"
+            />
+    </LinearLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_cards"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:background="@drawable/custom_text_input_layout_bg"
+        android:layout_marginVertical="8dp"
+        android:id="@+id/btn_show_cards"
+        />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:id="@+id/recycler"
+        android:layout_weight="8"
+        android:layout_marginVertical="10dp"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Back"
+        android:textSize="16sp"
+        android:textColor="@android:color/black"
+        android:background="@drawable/custom_text_input_layout_bg"
+        android:layout_marginTop="5dp"
+        android:id="@+id/btn_back"/>
+
+</LinearLayout>

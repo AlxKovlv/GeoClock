@@ -1,6 +1,7 @@
 package com.example.geoclock.ui.home
 
 import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
@@ -28,6 +29,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
 import java.io.IOException
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -60,8 +62,24 @@ class HomeFragment : Fragment() {
             showLogoutConfirmationDialog()
         }
 
+        binding.btnReports.setOnClickListener {
+            findNavController().navigate(R.id.action_homeFragment_to_reportsFragment)
+        }
+
 
         return binding.root
+    }
+
+    fun showDatePickerDialog(){
+        val calendarInstance = Calendar.getInstance()
+        val listener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+
+        }
+        val datePickerDialog = DatePickerDialog(requireContext(),listener,
+            calendarInstance.get(Calendar.YEAR),
+            calendarInstance.get(Calendar.MONTH),
+            calendarInstance.get(Calendar.DAY_OF_MONTH))
+        datePickerDialog.show()
     }
 
 //    private fun showAddCardDialog() {
@@ -246,7 +264,6 @@ class HomeFragment : Fragment() {
                 showDeleteCardConfirmationDialog(card)
             }
         }).attachToRecyclerView(binding.recycler)
-
         requestLocationPermissionIfNeeded()
 
         viewModel.cardStatus.observe(viewLifecycleOwner) { resource ->

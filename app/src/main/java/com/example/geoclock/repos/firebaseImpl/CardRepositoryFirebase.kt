@@ -1,5 +1,6 @@
 package com.example.geoclock.repos.firebaseImpl
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.geoclock.model.Card
 import com.example.geoclock.repos.CardRepository
@@ -137,6 +138,36 @@ class CardRepositoryFirebase : CardRepository {
             } else {
                 data.postValue(Resource.Error("Failed to fetch current user"))
             }
+        }
+    }
+
+    override suspend fun getCardsInRange(startDate: String, endDate: String): Resource<List<Card>> {
+        return try {
+            // Get the current user to filter cards by their name
+            val currentUserResult = AuthRepositoryFirebase().currentUser()
+            if (currentUserResult is Resource.Success) {
+                val currentUser = currentUserResult.data
+                val userName = currentUser?.name ?: "Unknown User"
+
+                // Query Firestore to get the cards within the date range for the current user
+                val querySnapshot = cardRef
+                    .whereEqualTo("userName", userName)
+                    .whereGreaterThanOrEqualTo("date", startDate)
+                    .whereLessThanOrEqualTo("date", endDate)
+                    .get()
+                    .await()
+
+                // Convert the query snapshot to a list of cards
+                val cardsInRange = querySnapshot.toObjects(Card::class.java)
+                Log.d("TAG", "Amount of cards with your dates: ${cardsInRange.size}")
+
+
+                Resource.Success(cardsInRange)
+            } else {
+                Resource.Error("Failed to fetch current user")
+            }
+        } catch (e: Exception) {
+            Resource.Error(e.message ?: "An error occurred")
         }
     }
 }

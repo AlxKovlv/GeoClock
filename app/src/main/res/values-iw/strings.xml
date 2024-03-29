@@ -34,4 +34,10 @@
     <string name="date">תאריך:</string>
     <string name="are_you_sure_you_want_to_start">האם אתה בטוח שברצונך להתחיל?</string>
     <string name="confirm_dialog">אשר</string>
+    <string name="reports">דוחות</string>
+    <string name="to">בין</string>
+    <string name="start_date">תאריך התחלה</string>
+    <string name="end_date">תאריך סיום</string>
+    <string name="show_cards">הצג דוחות</string>
+    <string name="reports_fragment_headline">על מנת להציג דוחות בטווח תאריכים מסוים, אנא בחר תאריך התחלה ותאריך סיום</string>
 </resources>

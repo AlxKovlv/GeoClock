@@ -33,4 +33,10 @@
     <string name="time">Time:</string>
     <string name="date">Date:</string>
     <string name="are_you_sure_you_want_to_start">Are you sure you want to start?</string>
+    <string name="reports">Reports</string>
+    <string name="to">To</string>
+    <string name="start_date">Start date</string>
+    <string name="end_date">End date</string>
+    <string name="show_cards">Display reports</string>
+    <string name="reports_fragment_headline">In order to display reports for certain dates, please choos a start date and an end date</string>
 </resources>
