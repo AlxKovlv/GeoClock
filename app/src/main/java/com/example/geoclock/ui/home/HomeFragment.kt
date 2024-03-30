@@ -2,20 +2,27 @@ package com.example.geoclock.ui.home
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.location.Geocoder
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+//import com.example.geoclock.Manifest
 import com.example.geoclock.R
 import com.example.geoclock.databinding.FragmentHomeBinding
 import com.example.geoclock.model.Card
@@ -25,13 +32,20 @@ import com.example.geoclock.util.Resource
 import com.example.geoclock.util.autoCleared
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
-
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
 import java.util.Locale
+import kotlinx.coroutines.*
+import kotlinx.coroutines.android.awaitFrame
+import kotlinx.coroutines.delay as delay
+
 
 class HomeFragment : Fragment() {
 
@@ -42,6 +56,10 @@ class HomeFragment : Fragment() {
     private var defaultTitle: String = ""
     private var currentDate: String = ""
     private var currentTime: String = ""
+    private var photo: String = ""
+
+
+
     private val viewModel: HomeViewModel by viewModels {
         HomeViewModel.HomeViewModelFactory(AuthRepositoryFirebase(), CardRepositoryFirebase())
     }
@@ -54,8 +72,8 @@ class HomeFragment : Fragment() {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
-        binding.btnStart.setOnClickListener {
-            showAddCardDialog()
+        binding.btnStart.setOnClickListener  {
+          showAddCardDialog()
         }
 
         binding.btnLogOut.setOnClickListener {
@@ -121,7 +139,7 @@ class HomeFragment : Fragment() {
                     // Check if location permission is granted
                     if (isLocationPermissionGranted()) {
                         // If permission granted, fetch location and add card
-                        fetchLocationAndAddCard(defaultTitle, currentDate, currentTime)
+                        fetchLocationAndAddCard(defaultTitle, currentDate, currentTime,photo)
                     } else {
                         // If permission not granted, show a message or handle it as needed
                         Toast.makeText(requireContext(), getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show()
@@ -150,7 +168,7 @@ class HomeFragment : Fragment() {
     }
 
     //Function for fetching the users location which only works if the user granted permission for location services
-    private fun fetchLocationAndAddCard(defaultTitle: String, currentDate: String, currentTime: String) {
+    private fun fetchLocationAndAddCard(defaultTitle: String, currentDate: String, currentTime: String,photo: String) {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -176,7 +194,7 @@ class HomeFragment : Fragment() {
                                 val address = addresses[0].getAddressLine(0)
                                 val locationString = getString(R.string.location)+address
                                 // Call viewModel.addCard with obtained location
-                                viewModel.addCard(defaultTitle, currentDate, currentTime, locationString)
+                                viewModel.addCard(defaultTitle, currentDate, currentTime, locationString,photo)
                             } else {
                                 Toast.makeText(requireContext(),
                                     getString(R.string.address_not_found), Toast.LENGTH_SHORT).show()
@@ -235,11 +253,26 @@ class HomeFragment : Fragment() {
 
         binding.recycler.adapter = CardsAdapter(object : CardsAdapter.CardListener {
             override fun onCardClicked(card: Card) {
-                //TODO Implement card click action
+                val bundle = Bundle()
+                bundle.putString("id",card.cardId.toString())
+                bundle.putString("loc",card.location.toString())
+                bundle.putString("time", card.time.toString())
+                bundle.putString("date",card.date.toString())
+                bundle.putString("title",card.title.toString())
+                bundle.putString("user",card.userName.toString())
+                if (photo!=null){
+                    bundle.putString("photo",card.photo.toString())
+                }
+
+                val fragment = photoFragment()
+                fragment.arguments = bundle
+
+                findNavController().navigate(R.id.action_homeFragment_to_photoFragment,bundle)
+
+
             }
 
             override fun onCardLongClicked(card: Card) {
-                showDeleteCardConfirmationDialog(card)
             }
         })
 
@@ -329,7 +362,7 @@ class HomeFragment : Fragment() {
                         getString(R.string.card_deleted), Snackbar.LENGTH_SHORT)
                     snackbar.setAction(getString(R.string.undo)) {
                         deletedCard?.let { restoredCard ->
-                            viewModel.addCard(restoredCard.title, restoredCard.date, restoredCard.time,restoredCard.location)
+                            viewModel.addCard(restoredCard.title, restoredCard.date, restoredCard.time,restoredCard.location,photo)
                             deletedCard = null
                         }
                     }
