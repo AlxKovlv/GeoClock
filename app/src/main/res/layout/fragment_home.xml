@@ -76,28 +76,23 @@
                     android:layout_height="wrap_content"
                     android:text="@string/reports"
                     android:textColor="@color/my_primary_color"
-                    android:textSize="8sp"
+                    android:textSize="11sp"
                     android:textAlignment="center"/>
 
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/btn_reports"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/custom_button"
-                    android:drawableLeft="@drawable/ic_reports"
-                    android:drawablePadding="8dp"
+                    android:src="@drawable/ic_reports"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"/>
 
-
-
-
-                <com.google.android.material.button.MaterialButton
+                <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/btn_log_out"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/custom_button"
-                    android:drawableLeft="@drawable/ic_log_out"
-                    android:drawablePadding="8dp"
+                    android:src="@drawable/ic_log_out"
+                    android:layout_margin="4dp"
                     android:layout_weight="1"/>
 
                 <TextView
@@ -105,7 +100,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/logout_btn"
                     android:textColor="@color/my_primary_color"
-                    android:textSize="8sp"
+                    android:textSize="11sp"
                     android:textAlignment="center"/>
 
             </LinearLayout>
