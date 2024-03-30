@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.reports.ReportsFragment"
     android:padding="20dp"
-    android:background="@drawable/back_reports"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -37,7 +36,7 @@
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:text="-"
+            android:text="@string/separator"
             android:textStyle="bold"
             android:gravity="center"
             android:textSize="14sp"
@@ -79,10 +78,11 @@
     <com.google.android.material.button.MaterialButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Back"
+        android:text="@string/back"
         android:textSize="14sp"
         android:textColor="@color/my_primary_color"
-        android:background="@drawable/custom_button"        android:layout_marginTop="5dp"
+        android:background="@drawable/custom_button"
+        android:layout_marginTop="5dp"
         android:id="@+id/btn_back"/>
 
 </LinearLayout>

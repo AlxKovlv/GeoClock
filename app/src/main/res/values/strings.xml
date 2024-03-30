@@ -39,4 +39,6 @@
     <string name="end_date">End date</string>
     <string name="show_cards">Display reports</string>
     <string name="reports_fragment_headline">Set date range for report viewing</string>
+    <string name="back">Back</string>
+    <string name="separator">-</string>
 </resources>

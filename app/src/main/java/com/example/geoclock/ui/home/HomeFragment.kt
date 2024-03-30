@@ -255,7 +255,7 @@ class HomeFragment : Fragment() {
                     Toast.makeText(requireContext(), resource.message ?: "Error occurred", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> {
-                    binding.homeTitle.text = "Hello..."
+                    binding.homeTitle.text = "Hello,"
                 }
             }
         }
