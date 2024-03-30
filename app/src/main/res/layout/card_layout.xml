@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:text="@string/name"
             android:textColor="@color/black"
             android:layout_marginBottom="5dp"/>
@@ -28,7 +28,7 @@
             android:id="@+id/text_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:textColor="@color/black"
             android:text="@string/location" android:layout_marginBottom="5dp"/>
 
@@ -48,7 +48,7 @@
                 android:id="@+id/text_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/black"
                 android:text="@string/time"
                 android:layout_marginStart="8dp"
@@ -65,7 +65,7 @@
                 android:id="@+id/text_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="14sp"
                 android:textColor="@color/black"
                 android:text="@string/date"
                 android:layout_marginStart="8dp"
