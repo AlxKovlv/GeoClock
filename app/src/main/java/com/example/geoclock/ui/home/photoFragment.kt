@@ -79,10 +79,8 @@ class photoFragment : Fragment() {
 
 
         //show  arguments in UI
-        binding.id.text = ("ID: " +id.toString())
         binding.loc.text = ("Location: " +loc.toString())
         binding.time.text = ("Time & Date: " +time.toString()+" "+date.toString())
-        binding.title.text = ("Title: "+title.toString())
         binding.user.text=("User: " +user.toString())
 
         binding.photo.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_gallety))
