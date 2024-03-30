@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".ui.reports.ReportsFragment"
     android:padding="20dp"
+    android:background="@drawable/back_reports"
     android:orientation="vertical">
 
     <!-- TODO: Update blank fragment layout -->
