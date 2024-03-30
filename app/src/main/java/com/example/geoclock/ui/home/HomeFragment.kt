@@ -73,7 +73,7 @@ class HomeFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         binding.btnStart.setOnClickListener  {
-          showAddCardDialog()
+            showAddCardDialog()
         }
 
         binding.btnLogOut.setOnClickListener {
@@ -255,8 +255,22 @@ class HomeFragment : Fragment() {
             }
 
             override fun onCardLongClicked(card: Card) {
-                //Wait for Itzhak
-                TODO("Not yet implemented")
+                val bundle = Bundle()
+                bundle.putString("id",card.cardId.toString())
+                bundle.putString("loc",card.location.toString())
+                bundle.putString("time", card.time.toString())
+                bundle.putString("date",card.date.toString())
+                bundle.putString("title",card.title.toString())
+                bundle.putString("user",card.userName.toString())
+                if (photo!=null){
+                    bundle.putString("photo",card.photo.toString())
+                }
+
+                val fragment = photoFragment()
+                fragment.arguments = bundle
+
+                findNavController().navigate(R.id.action_homeFragment_to_editDetailsFragment,bundle)
+
             }
         })
 

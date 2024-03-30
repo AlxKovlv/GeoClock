@@ -41,4 +41,6 @@
     <string name="reports_fragment_headline">Set date range for report viewing</string>
     <string name="back">Back</string>
     <string name="separator">-</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

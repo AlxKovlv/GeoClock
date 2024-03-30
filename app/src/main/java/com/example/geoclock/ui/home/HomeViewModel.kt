@@ -51,7 +51,7 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
     }
 
 
-//    fun addCard(title: String, date: String, time: String, location: String) {
+    //    fun addCard(title: String, date: String, time: String, location: String) {
 //        viewModelScope.launch {
 //            if (title.isEmpty()) {
 //                _addCardStatus.postValue(Resource.Error("Empty title"))
@@ -61,16 +61,16 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
 //            }
 //        }
 //    }
-fun addCard(title: String, date: String, time: String, location: String,photo: String) {
-    viewModelScope.launch {
-        if (title.isEmpty()) {
-            _addCardStatus.postValue(Resource.Error("Empty title"))
-        } else {
-            _addCardStatus.postValue(Resource.Loading())
-            _addCardStatus.postValue(cardRep.addCard(title, date, time, location, photo))
+    fun addCard(title: String, date: String, time: String, location: String,photo: String) {
+        viewModelScope.launch {
+            if (title.isEmpty()) {
+                _addCardStatus.postValue(Resource.Error("Empty title"))
+            } else {
+                _addCardStatus.postValue(Resource.Loading())
+                _addCardStatus.postValue(cardRep.addCard(title, date, time, location, photo))
+            }
         }
     }
-}
 
 
     fun deleteCard(cardId:String){

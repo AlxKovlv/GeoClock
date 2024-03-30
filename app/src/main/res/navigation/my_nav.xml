@@ -75,6 +75,12 @@
         <action
             android:id="@+id/action_homeFragment_to_photoFragment"
             app:destination="@id/photoFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_editDetailsFragment"
+            app:destination="@id/editDetailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_editDetailsFragment2"
+            app:destination="@id/editDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/reportsFragment"
@@ -101,6 +107,15 @@
         tools:layout="@layout/fragment_photo" >
         <action
             android:id="@+id/action_photoFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editDetailsFragment"
+        android:name="com.example.geoclock.ui.editdeails.EditDetailsFragment"
+        android:label="fragment_edit_details"
+        tools:layout="@layout/fragment_edit_details" >
+        <action
+            android:id="@+id/action_editDetailsFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 
