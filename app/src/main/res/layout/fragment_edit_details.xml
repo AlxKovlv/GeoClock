@@ -125,7 +125,8 @@
             android:background="@drawable/ic_edit02"
             android:gravity="end"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -175,7 +176,8 @@
             android:layout_marginEnd="8dp"
             android:background="@drawable/ic_edit02"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

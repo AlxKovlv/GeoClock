@@ -83,7 +83,7 @@ class photoFragment : Fragment() {
         binding.time.text = ("Time & Date: " +time.toString()+" "+date.toString())
         binding.user.text=("User: " +user.toString())
 
-        binding.photo.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_gallety))
+        binding.photo.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.no_photo))
 
 
         return binding.root
