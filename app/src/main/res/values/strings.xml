@@ -50,6 +50,5 @@
     <string name="emailDate">Date:</string>
     <string name="emailTime">Time:</string>
     <string name="emailLocation">Location:</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="create_card">Send Location</string>
 </resources>
