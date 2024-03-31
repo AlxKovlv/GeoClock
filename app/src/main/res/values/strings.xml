@@ -41,4 +41,13 @@
     <string name="reports_fragment_headline">Set date range for report viewing</string>
     <string name="back">Back</string>
     <string name="separator">-</string>
+    <string name="send_reports_via_email">Send reports via email</string>
+    <string name="here_are_your_geoclock_reports_from">"Here are your GeoClock reports from "</string>
+    <string name="send_email">Send Email</string>
+    <string name="please_enter_both_start_and_end_date">Please enter both start and end date</string>
+    <string name="geoclock_reports">GeoClock reports</string>
+    <string name="emailUser">User:</string>
+    <string name="emailDate">Date:</string>
+    <string name="emailTime">Time:</string>
+    <string name="emailLocation">Location:</string>
 </resources>

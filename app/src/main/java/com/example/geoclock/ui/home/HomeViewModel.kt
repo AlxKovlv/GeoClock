@@ -50,6 +50,10 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
         authRep.logout()
     }
 
+    fun getCards(): List<Card> {
+        return _cardsStatus.value?.data ?: emptyList()
+    }
+
 
 //    fun addCard(title: String, date: String, time: String, location: String) {
 //        viewModelScope.launch {

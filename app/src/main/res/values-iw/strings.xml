@@ -42,4 +42,13 @@
     <string name="reports_fragment_headline">על מנת להציג דוחות בטווח תאריכים מסוים, אנא בחר תאריך התחלה ותאריך סיום</string>
     <string name="back">חזור</string>
     <string name="separator">-</string>
+    <string name="send_reports_via_email">שלח דוחות באימייל</string>
+    <string name="here_are_your_geoclock_reports_from">" הנה הדוחות GeoClock שלך בין התאריכים"</string>
+    <string name="send_email">שלח אימייל</string>
+    <string name="please_enter_both_start_and_end_date">אנא הכנס גם תאריך התחלה וגם תאריך סיום</string>
+    <string name="geoclock_reports">דוחות GeoClock</string>
+    <string name="emailUser">משתמש:</string>
+    <string name="emailDate">תאריך:</string>
+    <string name="emailTime">זמן:</string>
+    <string name="emailLocation">מיקום:</string>
 </resources>

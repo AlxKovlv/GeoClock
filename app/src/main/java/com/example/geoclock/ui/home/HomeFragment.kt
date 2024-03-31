@@ -1,23 +1,16 @@
 package com.example.geoclock.ui.home
 
 import android.app.AlertDialog
-import android.app.DatePickerDialog
-import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.location.Geocoder
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.*
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -33,18 +26,10 @@ import com.example.geoclock.util.autoCleared
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
-import kotlinx.coroutines.*
-import kotlinx.coroutines.android.awaitFrame
-import kotlinx.coroutines.delay as delay
 
 
 class HomeFragment : Fragment() {
@@ -77,7 +62,12 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnLogOut.setOnClickListener {
-            showLogoutConfirmationDialog()
+            if (isLocationPermissionGranted()){
+                showLogoutConfirmationDialog()
+            }else{
+                requestLocationPermissionIfNeeded()
+            }
+
         }
 
         binding.btnReports.setOnClickListener {
@@ -86,18 +76,6 @@ class HomeFragment : Fragment() {
 
 
         return binding.root
-    }
-
-    fun showDatePickerDialog(){
-        val calendarInstance = Calendar.getInstance()
-        val listener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-
-        }
-        val datePickerDialog = DatePickerDialog(requireContext(),listener,
-            calendarInstance.get(Calendar.YEAR),
-            calendarInstance.get(Calendar.MONTH),
-            calendarInstance.get(Calendar.DAY_OF_MONTH))
-        datePickerDialog.show()
     }
 
     //Function to ask for location permission
@@ -224,6 +202,7 @@ class HomeFragment : Fragment() {
             }
             .setNegativeButton(getString(R.string.cancel_dialog)) { dialog, _ ->
                 dialog.dismiss()
+                (binding.recycler.adapter as CardsAdapter).setCards(viewModel.getCards())
             }
         alertDialogBuilder.show()
     }
@@ -253,13 +232,11 @@ class HomeFragment : Fragment() {
 
 
             }
-
             override fun onCardLongClicked(card: Card) {
                 //Wait for Itzhak
-                TODO("Not yet implemented")
+
             }
         })
-
         // Greet the user: change title string to username
         viewModel.fetchCurrentUser()
         viewModel.currentUser.observe(viewLifecycleOwner) { resource ->
@@ -359,6 +336,4 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-
 }
