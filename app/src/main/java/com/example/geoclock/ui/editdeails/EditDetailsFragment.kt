@@ -40,12 +40,14 @@ class EditDetailsFragment : Fragment() {
         val time = args?.get("time")
         val date = args?.get("date")
         val title = args?.get("title")
+        val note = args?.get("note")
         val user = args?.get("user")
 
         //show  arguments in UI
         binding.tvLoc.text = ("Location: " +loc.toString())
         binding.tvTime.text = ("Time & Date: " +time.toString()+" "+date.toString())
         binding.tvUser.text=("User: " +user.toString())
+        binding.tvEditNote.text=(note.toString())
 
         binding.btnEditNote.setOnClickListener{
             showEditNoteDialog()
