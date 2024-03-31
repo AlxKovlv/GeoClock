@@ -73,6 +73,7 @@ class photoFragment : Fragment() {
             val photo: Bitmap = stringToBitmap(photo_as_string.toString())
             binding.photo.setImageBitmap(photo)
         }catch (e: Exception){
+            binding.photo.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.no_photo))
             Toast.makeText(requireContext(), "there is no photo to show", Toast.LENGTH_SHORT).show()
         }
 
@@ -83,7 +84,6 @@ class photoFragment : Fragment() {
         binding.time.text = ("Time & Date: " +time.toString()+" "+date.toString())
         binding.user.text=("User: " +user.toString())
 
-        binding.photo.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.no_photo))
 
 
         return binding.root
