@@ -9,11 +9,11 @@
         android:id="@+id/loginFragment"
         android:name="com.example.geoclock.ui.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right">
+        app:popExitAnim="@anim/slide_out_right"
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -34,11 +34,11 @@
         android:id="@+id/registerFragment"
         android:name="com.example.geoclock.ui.register.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right">
+        app:popExitAnim="@anim/slide_out_right"
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -52,11 +52,11 @@
         android:id="@+id/homeFragment"
         android:name="com.example.geoclock.ui.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right">
+        app:popExitAnim="@anim/slide_out_right"
+        tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_loginFragment"
             app:destination="@id/loginFragment"
@@ -74,23 +74,31 @@
             app:popExitAnim="@anim/slide_out_right" />
         <action
             android:id="@+id/action_homeFragment_to_photoFragment"
-            app:destination="@id/photoFragment" />
+            app:destination="@id/photoFragment"
+            app:enterAnim="@anim/expand_from_center"
+            app:exitAnim="@anim/shrink_to_center"
+            app:popEnterAnim="@anim/expand_from_center"
+            app:popExitAnim="@anim/shrink_to_center" />
         <action
             android:id="@+id/action_homeFragment_to_editDetailsFragment"
             app:destination="@id/editDetailsFragment" />
         <action
             android:id="@+id/action_homeFragment_to_editDetailsFragment2"
-            app:destination="@id/editDetailsFragment" />
+            app:destination="@id/editDetailsFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/reportsFragment"
         android:name="com.example.geoclock.ui.reports.ReportsFragment"
         android:label="fragment_reports"
-        tools:layout="@layout/fragment_reports"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right">
+        app:popExitAnim="@anim/slide_out_right"
+        tools:layout="@layout/fragment_reports">
         <action
             android:id="@+id/action_reportsFragment_to_homeFragment"
             app:destination="@id/homeFragment"
@@ -104,19 +112,25 @@
         android:id="@+id/photoFragment"
         android:name="com.example.geoclock.ui.home.photoFragment"
         android:label="fragment_photo"
-        tools:layout="@layout/fragment_photo" >
+        tools:layout="@layout/fragment_photo">
         <action
             android:id="@+id/action_photoFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:popUpTo="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/editDetailsFragment"
         android:name="com.example.geoclock.ui.editdeails.EditDetailsFragment"
         android:label="fragment_edit_details"
-        tools:layout="@layout/fragment_edit_details" >
+        tools:layout="@layout/fragment_edit_details">
         <action
             android:id="@+id/action_editDetailsFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out"
+            app:popUpTo="@id/homeFragment" />
     </fragment>
 
 </navigation>
