@@ -56,6 +56,7 @@ class HomeFragment : Fragment() {
     private var defaultTitle: String = ""
     private var currentDate: String = ""
     private var currentTime: String = ""
+    private var currentNote: String = ""
     private var photo: String = ""
 
 
@@ -121,7 +122,7 @@ class HomeFragment : Fragment() {
                     // Check if location permission is granted
                     if (isLocationPermissionGranted()) {
                         // If permission granted, fetch location and add card
-                        fetchLocationAndAddCard(defaultTitle, currentDate, currentTime,photo)
+                        fetchLocationAndAddCard(defaultTitle, currentDate, currentTime,currentNote,photo)
                     } else {
                         // If permission not granted, show a message or handle it as needed
                         Toast.makeText(requireContext(), getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show()
@@ -150,7 +151,7 @@ class HomeFragment : Fragment() {
     }
 
     //Function for fetching the users location which only works if the user granted permission for location services
-    private fun fetchLocationAndAddCard(defaultTitle: String, currentDate: String, currentTime: String,photo: String) {
+    private fun fetchLocationAndAddCard(defaultTitle: String, currentDate: String, currentTime: String,currentNote:String,photo: String) {
         if (ActivityCompat.checkSelfPermission(
                 requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -176,7 +177,7 @@ class HomeFragment : Fragment() {
                                 val address = addresses[0].getAddressLine(0)
                                 val locationString = getString(R.string.location)+address
                                 // Call viewModel.addCard with obtained location
-                                viewModel.addCard(defaultTitle, currentDate, currentTime, locationString,photo)
+                                viewModel.addCard(defaultTitle, currentDate, currentTime, locationString,currentNote,photo)
                             } else {
                                 Toast.makeText(requireContext(),
                                     getString(R.string.address_not_found), Toast.LENGTH_SHORT).show()
@@ -360,7 +361,7 @@ class HomeFragment : Fragment() {
                         getString(R.string.card_deleted), Snackbar.LENGTH_SHORT)
                     snackbar.setAction(getString(R.string.undo)) {
                         deletedCard?.let { restoredCard ->
-                            viewModel.addCard(restoredCard.title, restoredCard.date, restoredCard.time,restoredCard.location,photo)
+                            viewModel.addCard(restoredCard.title, restoredCard.date, restoredCard.time,restoredCard.location,restoredCard.note,photo)
                             deletedCard = null
                         }
                     }

@@ -36,14 +36,14 @@ class CardRepositoryFirebase : CardRepository {
 //        }
 //    }
 
-    override suspend fun addCard(title: String, date: String, time: String, location: String,photo: String) = withContext(Dispatchers.IO) {
+    override suspend fun addCard(title: String, date: String, time: String, location: String,note:String ,photo: String) = withContext(Dispatchers.IO) {
         safeCall {
             val currentUserResult = AuthRepositoryFirebase().currentUser()
             if (currentUserResult is Resource.Success) {
                 val currentUser = currentUserResult.data
                 val userName = currentUser?.name ?: "Unknown User"
                 val cardId = cardRef.document().id
-                val card = Card(cardId, title, userName, date, time, location,0.0,0.0,photo) // Include location parameter
+                val card = Card(cardId, title, userName, date, time, location,0.0,0.0,note,photo) // Include location parameter
                 val addition = cardRef.document(cardId).set(card).await()
                 Resource.Success(addition)
             } else {
