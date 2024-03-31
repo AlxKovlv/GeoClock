@@ -13,10 +13,12 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
+
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+
 import androidx.lifecycle.findViewTreeViewModelStoreOwner
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -78,8 +80,17 @@ class HomeFragment : Fragment() {
         }
 
         binding.btnLogOut.setOnClickListener {
-            showLogoutConfirmationDialog()
+            if (isLocationPermissionGranted()){
+                showLogoutConfirmationDialog()
+            }else{
+                requestLocationPermissionIfNeeded()
+            }
+
         }
+
+
+
+
 
         binding.btnReports.setOnClickListener {
             findNavController().navigate(R.id.action_homeFragment_to_reportsFragment)
@@ -225,6 +236,7 @@ class HomeFragment : Fragment() {
             }
             .setNegativeButton(getString(R.string.cancel_dialog)) { dialog, _ ->
                 dialog.dismiss()
+                (binding.recycler.adapter as CardsAdapter).setCards(viewModel.getCards())
             }
         alertDialogBuilder.show()
     }
@@ -246,13 +258,9 @@ class HomeFragment : Fragment() {
                 if (photo!=null){
                     bundle.putString("photo",card.photo.toString())
                 }
-
                 val fragment = photoFragment()
                 fragment.arguments = bundle
-
                 findNavController().navigate(R.id.action_homeFragment_to_photoFragment,bundle)
-
-
             }
 
             override fun onCardLongClicked(card: Card) {
@@ -375,6 +383,4 @@ class HomeFragment : Fragment() {
             }
         }
     }
-
-
 }

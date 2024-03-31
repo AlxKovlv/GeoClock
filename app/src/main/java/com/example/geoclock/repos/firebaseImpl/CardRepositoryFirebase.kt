@@ -100,7 +100,6 @@ class CardRepositoryFirebase : CardRepository {
 //        }
 //    }
 
-
     //My modified version
     override fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>) {
         data.postValue(Resource.Loading())
@@ -141,28 +140,32 @@ class CardRepositoryFirebase : CardRepository {
             }
         }
     }
-
     override suspend fun getCardsInRange(startDate: String, endDate: String): Resource<List<Card>> {
         return try {
-            // Get the current user to filter cards by their name
+            // Get the current user to determine the query behavior
             val currentUserResult = AuthRepositoryFirebase().currentUser()
             if (currentUserResult is Resource.Success) {
                 val currentUser = currentUserResult.data
                 val userName = currentUser?.name ?: "Unknown User"
 
-                // Query Firestore to get the cards within the date range for the current user
-                val querySnapshot = cardRef
-                    .whereEqualTo("userName", userName)
-                    .whereGreaterThanOrEqualTo("date", startDate)
-                    .whereLessThanOrEqualTo("date", endDate)
-                    .get()
-                    .await()
+                // Query Firestore to get the cards within the date range
+                val querySnapshot = if (userName.contains("admin", ignoreCase = true)) {
+                    // If the user has "admin" in their name, fetch all cards within the date range
+                    cardRef.whereGreaterThanOrEqualTo("date", startDate)
+                        .whereLessThanOrEqualTo("date", endDate)
+                        .get()
+                        .await()
+                } else {
+                    // If not an admin, fetch only the cards associated with the current user within the date range
+                    cardRef.whereEqualTo("userName", userName)
+                        .whereGreaterThanOrEqualTo("date", startDate)
+                        .whereLessThanOrEqualTo("date", endDate)
+                        .get()
+                        .await()
+                }
 
                 // Convert the query snapshot to a list of cards
                 val cardsInRange = querySnapshot.toObjects(Card::class.java)
-                Log.d("TAG", "Amount of cards with your dates: ${cardsInRange.size}")
-
-
                 Resource.Success(cardsInRange)
             } else {
                 Resource.Error("Failed to fetch current user")

@@ -1,6 +1,8 @@
 package com.example.geoclock.ui.reports
 
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -8,24 +10,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.geoclock.R
-import com.example.geoclock.databinding.FragmentHomeBinding
 import com.example.geoclock.databinding.FragmentReportsBinding
 import com.example.geoclock.model.Card
-import com.example.geoclock.repos.CardRepository
-import com.example.geoclock.repos.firebaseImpl.AuthRepositoryFirebase
 import com.example.geoclock.repos.firebaseImpl.CardRepositoryFirebase
 import com.example.geoclock.ui.home.CardsAdapter
-import com.example.geoclock.ui.home.HomeViewModel
 import com.example.geoclock.util.Resource
 import com.example.geoclock.util.autoCleared
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -104,9 +100,14 @@ class ReportsFragment : Fragment() {
            if(startDate != "" && endDate != ""){
                 viewModel.getFilteredCards(startDate, endDate)
             }else{
-                Toast.makeText(requireContext(),"Please enter both start and end date",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(),
+                    getString(R.string.please_enter_both_start_and_end_date),Toast.LENGTH_SHORT).show()
             }
             Log.d("TAG", "start date: $startDate, end date: $endDate")
+        }
+
+        binding.btnSendEmail.setOnClickListener {
+            sendMail(startDate,endDate)
         }
 
         return binding.root
@@ -131,7 +132,8 @@ class ReportsFragment : Fragment() {
         viewModel.filteredCards.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
-                    // Update RecyclerView with filtered cards
+                    binding.progressBar.isVisible = false
+                    binding.btnSendEmail.isEnabled = true
                     (binding.recycler.adapter as? CardsAdapter)?.setCards(resource.data ?: emptyList())
                 }
                 is Resource.Error -> {
@@ -139,12 +141,37 @@ class ReportsFragment : Fragment() {
                     Toast.makeText(requireContext(), resource.message ?: "Filtered card error", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> {
-                    // Show loading indicator if needed
+                    binding.progressBar.isVisible = true
+                    binding.btnSendEmail.isEnabled = false
                 }
             }
         }
     }
 
+    fun sendMail(startDate: String, endDate: String){
+        val subject= getString(R.string.geoclock_reports)
+        val messagePartOne = getString(R.string.here_are_your_geoclock_reports_from)
+        var message = messagePartOne+" $startDate - $endDate\n"
+        // Get the list of cards within the selected time frame
+        val cards = (binding.recycler.adapter as? CardsAdapter)?.getCards() ?: emptyList()
+        for (card in cards) {
+            val cardText = """
+            |${getString(R.string.emailUser)} ${card.userName}
+            |${getString(R.string.emailDate)} ${card.date}
+            |${getString(R.string.emailTime)} ${card.time}
+            | ${card.location}
+            |
+            """.trimMargin()
+            message=message+"\n$cardText"
+        }
+
+        val intent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_SUBJECT, subject)
+            putExtra(Intent.EXTRA_TEXT, message)
+        }
+        startActivity(intent)
+    }
     fun showDatePickerDialog() {
         val calendarInstance = Calendar.getInstance()
         val listener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
@@ -168,9 +195,7 @@ class ReportsFragment : Fragment() {
         )
         datePickerDialog.show()
     }
-
     private fun formatTwoDigits(number: Int): String {
         return if (number < 10) "0$number" else number.toString()
     }
-
 }
