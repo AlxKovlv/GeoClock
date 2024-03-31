@@ -5,31 +5,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.home.photoFragment"
     android:orientation="vertical"
-    android:padding="16dp">
-
-    <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"   >
-        <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_location">
-        </ImageView>
-        <Space
-            android:layout_width="10dp"
-            android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/loc"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginBottom="16dp"
-        android:text="Location: "
-        android:textColor="@color/black"
-        android:textSize="20sp" />
-    </LinearLayout>
+    android:background="@drawable/expand_card_background"
+    android:padding="36dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -37,10 +14,42 @@
         android:orientation="horizontal"   >
 
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_avatar">
+        </ImageView>
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/user"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginTop="16dp"
+            android:text="@string/username"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </LinearLayout>
+
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"   >
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
             android:src="@drawable/ic_time">
         </ImageView>
+
+
         <Space
             android:layout_width="10dp"
             android:layout_height="wrap_content"/>
@@ -49,34 +58,45 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        android:text="Time: "
+        android:text="@string/time"
         android:textColor="@color/black"
-        android:textSize="20sp" />
+        android:textSize="14sp" />
 
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"   >
-
         <ImageView
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:src="@drawable/ic_worker">
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_location">
         </ImageView>
         <Space
             android:layout_width="10dp"
             android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="start"
-        android:layout_marginTop="16dp"
-        android:text="User: "
-        android:textColor="@color/black"
-        android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/loc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginBottom="16dp"
+            android:text="@string/location"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
     </LinearLayout>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="10dp"/>
+
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -88,9 +108,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="start"
         android:layout_marginTop="16dp"
-        android:text="photo: "
+        android:text="@string/photo"
         android:textColor="@color/black"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     </LinearLayout>
 

@@ -51,4 +51,5 @@
     <string name="emailTime">Time:</string>
     <string name="emailLocation">Location:</string>
     <string name="create_card">Send Location</string>
+    <string name="photo">"Photo: "</string>
 </resources>
