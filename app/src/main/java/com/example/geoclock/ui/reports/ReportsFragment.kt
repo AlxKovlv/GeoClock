@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -98,7 +97,8 @@ class ReportsFragment : Fragment() {
 
         binding.btnShowCards.setOnClickListener {
            if(startDate != "" && endDate != ""){
-                viewModel.getFilteredCards(startDate, endDate)
+                //viewModel.getFilteredCards(startDate, endDate)
+               viewModel.getFilteredCards()
             }else{
                 Toast.makeText(requireContext(),
                     getString(R.string.please_enter_both_start_and_end_date),Toast.LENGTH_SHORT).show()
@@ -127,7 +127,29 @@ class ReportsFragment : Fragment() {
             }
         })
 
-        // Observe filtered cards
+        //observe for changes in the dates
+        viewModel.startDateLiveData.observe(viewLifecycleOwner) { startDate ->
+            binding.btnStartDate.text = startDate
+            this.startDate = startDate
+        }
+
+        viewModel.endDateLiveData.observe(viewLifecycleOwner) { endDate ->
+            binding.btnEndDate.text = endDate
+            this.endDate = endDate
+        }
+
+        //apply changes to the dates
+        viewModel.startDateLiveData.value?.let { startDate ->
+            binding.btnStartDate.text = startDate
+            this.startDate = startDate
+        }
+
+        viewModel.endDateLiveData.value?.let { endDate ->
+            binding.btnEndDate.text = endDate
+            this.endDate = endDate
+        }
+
+        //Observe filtered cards
         viewModel.filteredCards.observe(viewLifecycleOwner) { resource ->
             when (resource) {
                 is Resource.Success -> {
@@ -178,11 +200,11 @@ class ReportsFragment : Fragment() {
             when (selectedButtonId) {
                 R.id.btn_start_date -> {
                     binding.btnStartDate.text = selectedDate
-                    startDate = selectedDate
+                    viewModel.startDateLiveData.value = selectedDate
                 }
                 R.id.btn_end_date -> {
                     binding.btnEndDate.text = selectedDate
-                    endDate = selectedDate
+                    viewModel.endDateLiveData.value = selectedDate
                 }
             }
         }

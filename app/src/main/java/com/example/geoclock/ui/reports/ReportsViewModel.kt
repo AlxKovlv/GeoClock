@@ -15,12 +15,20 @@ class ReportsViewModel(private val cardRepository: CardRepository) : ViewModel()
 
     private val _filteredCards = MutableLiveData<Resource<List<Card>>>()
     val filteredCards: LiveData<Resource<List<Card>>> = _filteredCards
+    val startDateLiveData = MutableLiveData<String>()
+    val endDateLiveData = MutableLiveData<String>()
 
-    fun getFilteredCards(startDate: String, endDate: String) {
-        viewModelScope.launch {
-            //Fetch cards based on the date range
-            val result = cardRepository.getCardsInRange(startDate, endDate)
-            _filteredCards.postValue(result)
+    fun getFilteredCards() {
+        val startDate = startDateLiveData.value
+        val endDate = endDateLiveData.value
+        if (!startDate.isNullOrBlank() && !endDate.isNullOrBlank()) {
+            viewModelScope.launch {
+                // Fetch cards based on the date range
+                val result = cardRepository.getCardsInRange(startDate, endDate)
+                _filteredCards.postValue(result)
+            }
+        } else {
+            _filteredCards.value = Resource.Error("Start date and end date must be set.")
         }
     }
 
