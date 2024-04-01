@@ -18,13 +18,13 @@ import com.example.geoclock.util.autoCleared
 class RegisterFragment : Fragment() {
 
     private var binding : FragmentRegisterBinding by autoCleared()
-    private val viewModel : RegisterViewModel by viewModels() { RegisterViewModel.RegisterVieModelFactory(AuthRepositoryFirebase()) }
+    private val viewModel : RegisterViewModel by viewModels { RegisterViewModel.RegisterVieModelFactory(AuthRepositoryFirebase()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentRegisterBinding.inflate(inflater, container, false)
         binding.userRegisterButton.setOnClickListener {
             viewModel.createUser(

@@ -35,7 +35,7 @@ class EditDetailsFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         binding = FragmentEditDetailsBinding.inflate(inflater, container, false)
 
@@ -189,7 +189,7 @@ class EditDetailsFragment : Fragment() {
             binding.editPhoto.setImageBitmap(photo_As_bitmap)
 
             //ARRAY TO STRING
-            photo = android.util.Base64.encodeToString(byteArray, android.util.Base64.DEFAULT)
+            photo = Base64.encodeToString(byteArray, Base64.DEFAULT)
                 .toString()
             //get ID
             val args = this.arguments
