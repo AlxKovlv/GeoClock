@@ -9,7 +9,7 @@
     android:padding="16dp">
 
     <LinearLayout
-        android:layout_margin="5dp"
+
         android:padding="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,9 +18,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Edit Your Details"
+            android:text="@string/edit_screen"
+            android:textColor="@color/my_primary_color"
             android:textStyle="bold"
-            android:textSize="30dp"
+            android:textSize="24sp"
             android:gravity="center"
             android:layout_gravity="end"/>
 
@@ -38,10 +39,10 @@
             android:layout_gravity="start"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Location: "
+            android:text="@string/location"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
     </LinearLayout>
     <LinearLayout
         android:padding="5dp"
@@ -55,10 +56,10 @@
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Time: "
+            android:text="@string/time"
             android:textStyle="bold"
             android:textColor="@color/black"
-            android:textSize="18sp" />
+            android:textSize="14sp" />
     </LinearLayout>
     <LinearLayout
         android:padding="5dp"
@@ -71,9 +72,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:text="User: "
+            android:text="@string/username"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="14sp"
             android:padding="5dp"
             android:textStyle="bold" />
     </LinearLayout>
@@ -83,9 +84,11 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
+
+
         <LinearLayout
             android:id="@+id/linearLayoutNote"
-            android:layout_width="320dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="5dp"
@@ -100,33 +103,32 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:padding="5dp"
-                android:text="Note: "
+                android:text="@string/note"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/tv_edit_note"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:hint="Add Note"
                 android:layout_marginStart="5dp"
-                android:textSize="18sp"
+                android:hint="@string/add_note"
                 android:padding="5dp"
-                />
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btn_edit_note"
+                android:layout_width="24sp"
+                android:layout_height="20dp"
+                android:layout_marginStart="27dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/ic_edit02"
+                android:gravity="end" />
+
+
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_edit_note"
-            android:layout_width="24sp"
-            android:layout_height="20dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/ic_edit02"
-            android:gravity="end"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -137,7 +139,7 @@
 
         <LinearLayout
             android:id="@+id/linearLayoutPhoto"
-            android:layout_width="300dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginTop="5dp"
@@ -154,31 +156,13 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginTop="16dp"
-                android:text="photo: "
+                android:text="@string/photo"
                 android:textColor="@color/black"
-                android:textSize="20dp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
-
-            <ImageView
-                android:id="@+id/edit_photo"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="5dp" />
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/btn_edit_photo"
-            android:layout_width="26dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:background="@drawable/ic_edit02"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:onClick="addPhoto"
-            />
     </androidx.constraintlayout.widget.ConstraintLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -188,17 +172,39 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_update"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-
-
-            android:background="@drawable/rounded_transparent_background"
-            android:text="Update"
-            android:textColor="@android:color/black"
+            android:background="@drawable/custom_button"
+            android:text="@string/update"
+            android:textColor="@color/my_primary_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <ImageView
+            android:id="@+id/edit_photo"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            app:layout_constraintBottom_toTopOf="@+id/btn_update"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.083" />
+
+        <Button
+            android:id="@+id/btn_edit_photo"
+            android:layout_width="26dp"
+            android:layout_height="24dp"
+            android:background="@drawable/ic_edit02"
+            android:onClick="addPhoto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.542"
+            app:layout_constraintStart_toEndOf="@+id/edit_photo"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.029" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

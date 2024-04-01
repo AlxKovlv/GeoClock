@@ -53,5 +53,8 @@
     <string name="emailLocation">מיקום:</string>
     <string name="create_card">שלח מיקום</string>
     <string name="photo">תמונה:</string>
+    <string name="edit_screen">חלון עריכה</string>
     <string name="note">הערה:</string>
+    <string name="add_note">הוסף הערה</string>
+    <string name="update">עדכן</string>
 </resources>
