@@ -102,8 +102,13 @@ class HomeViewModel(private val authRep:AuthRepository, val cardRep:CardReposito
         }
     }
 
+//    init {
+//        cardRep.getCardsLiveData(_cardsStatus)
+//    }
+
     init {
-        cardRep.getCardsLiveData(_cardsStatus)
+        // Use viewModelScope from HomeViewModel
+        cardRep.getCardsLiveData(_cardsStatus, viewModelScope)
     }
 
     class HomeViewModelFactory(private val authRep: AuthRepository, private val cardRep:CardRepository) : ViewModelProvider.NewInstanceFactory(){

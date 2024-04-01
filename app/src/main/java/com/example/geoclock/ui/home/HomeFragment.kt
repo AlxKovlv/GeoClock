@@ -76,16 +76,15 @@ class HomeFragment : Fragment() {
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
         binding.btnStart.setOnClickListener  {
-            showAddCardDialog()
-        }
-
-        binding.btnLogOut.setOnClickListener {
-            if (isLocationPermissionGranted()){
-                showLogoutConfirmationDialog()
+            if(isLocationPermissionGranted()){
+                showAddCardDialog()
             }else{
                 requestLocationPermissionIfNeeded()
             }
+        }
 
+        binding.btnLogOut.setOnClickListener {
+            showLogoutConfirmationDialog()
         }
 
 
@@ -98,18 +97,6 @@ class HomeFragment : Fragment() {
 
 
         return binding.root
-    }
-
-    fun showDatePickerDialog(){
-        val calendarInstance = Calendar.getInstance()
-        val listener = DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
-
-        }
-        val datePickerDialog = DatePickerDialog(requireContext(),listener,
-            calendarInstance.get(Calendar.YEAR),
-            calendarInstance.get(Calendar.MONTH),
-            calendarInstance.get(Calendar.DAY_OF_MONTH))
-        datePickerDialog.show()
     }
 
     //Function to ask for location permission
@@ -149,10 +136,9 @@ class HomeFragment : Fragment() {
     private val requestLocationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                // Permission is granted, do nothing here, the location will be fetched when needed
+                //Permission is granted, the location will be fetched when needed
             } else {
-                Toast.makeText(requireContext(),
-                    getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.location_permission_denied), Toast.LENGTH_SHORT).show()
             }
         }
 
@@ -163,7 +149,7 @@ class HomeFragment : Fragment() {
 
     //Function for fetching the users location which only works if the user granted permission for location services
     private fun fetchLocationAndAddCard(defaultTitle: String, currentDate: String, currentTime: String,currentNote:String,photo: String) {
-        if (ActivityCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission(//If the permissions were not granted by the user, return
                 requireContext(),
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
@@ -179,7 +165,7 @@ class HomeFragment : Fragment() {
                     val latitude = it.latitude
                     val longitude = it.longitude
 
-                    // Use Geocoder to get the address from latitude and longitude
+                    //Use Geocoder to get the actual address from latitude and longitude
                     val geocoder = Geocoder(requireContext(), Locale.getDefault())
                     try {
                         val addresses = geocoder.getFromLocation(latitude, longitude, 1)
@@ -187,26 +173,22 @@ class HomeFragment : Fragment() {
                             if (addresses.isNotEmpty()) {
                                 val address = addresses[0].getAddressLine(0)
                                 val locationString = getString(R.string.location)+address
-                                // Call viewModel.addCard with obtained location
+                                //Call viewModel.addCard with obtained location
                                 viewModel.addCard(defaultTitle, currentDate, currentTime, locationString,currentNote,photo)
                             } else {
-                                Toast.makeText(requireContext(),
-                                    getString(R.string.address_not_found), Toast.LENGTH_SHORT).show()
+                                Toast.makeText(requireContext(), getString(R.string.address_not_found), Toast.LENGTH_SHORT).show()
                             }
                         }
                     } catch (e: IOException) {
-                        Toast.makeText(requireContext(),
-                            getString(R.string.error_fetching_address), Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), getString(R.string.error_fetching_address), Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
                     }
                 } ?: run {
-                    Toast.makeText(requireContext(),
-                        getString(R.string.unable_to_fetch_location), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), getString(R.string.unable_to_fetch_location), Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { e ->
-                Toast.makeText(requireContext(),
-                    getString(R.string.location_fetch_failed)+"${e.message}", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.location_fetch_failed)+"${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 

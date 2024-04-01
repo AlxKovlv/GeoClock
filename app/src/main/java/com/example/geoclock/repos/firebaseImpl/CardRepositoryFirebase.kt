@@ -7,6 +7,7 @@ import com.example.geoclock.model.Card
 import com.example.geoclock.repos.CardRepository
 import com.example.geoclock.util.Resource
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.tasks.await
@@ -19,22 +20,6 @@ import safeCall
 class CardRepositoryFirebase : CardRepository {
 
     private val cardRef = FirebaseFirestore.getInstance().collection("cards")
-
-//    override suspend fun addCard(title: String, date: String, time: String) = withContext(Dispatchers.IO) {
-//        safeCall {
-//            val currentUserResult = AuthRepositoryFirebase().currentUser()
-//            if (currentUserResult is Resource.Success) {
-//                val currentUser = currentUserResult.data
-//                val userName = currentUser?.name ?: "Unknown User"
-//                val cardId = cardRef.document().id
-//                val card = Card(cardId, title, userName, date, time) // Include time parameter
-//                val addition = cardRef.document(cardId).set(card).await()
-//                Resource.Success(addition)
-//            } else {
-//                Resource.Error("Failed to fetch current user")
-//            }
-//        }
-//    }
 
     override suspend fun addCard(title: String, date: String, time: String, location: String,note:String ,photo: String) = withContext(Dispatchers.IO) {
         safeCall {
@@ -51,7 +36,6 @@ class CardRepositoryFirebase : CardRepository {
             }
         }
     }
-
 
     override suspend fun deleteCard(cardId: String) = withContext(Dispatchers.IO){
         safeCall {
@@ -83,95 +67,86 @@ class CardRepositoryFirebase : CardRepository {
         }
     }
 
-//Old way of getting cards which gets all cards no matter which user it is
-//    override fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>) {
-//        data.postValue(Resource.Loading())
-//
-//        cardRef.orderBy("time").addSnapshotListener {snapshot, e->
-//            if(e!=null){
-//                data.postValue(Resource.Error(e.localizedMessage ?: "Unknown error"))
-//            }
-//            if(snapshot != null && !snapshot.isEmpty){
-//                data.postValue(Resource.Success(snapshot.toObjects(Card::class.java)))
-//            }
-//            else{
-//                data.postValue(Resource.Error("No data"))
-//            }
-//        }
-//    }
-
-    //My modified version
-    override fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>) {
+    //Function used to retrieve either all cards (if the user is admin) or only the currently logged in user's cards from firestore
+    override fun getCardsLiveData(data: MutableLiveData<Resource<List<Card>>>, coroutineScope: CoroutineScope) {
         data.postValue(Resource.Loading())
-
-        // Get the current user to filter cards by their name
-        GlobalScope.launch {
+        coroutineScope.launch {
             val currentUserResult = withContext(Dispatchers.IO) {
                 AuthRepositoryFirebase().currentUser()
             }
             if (currentUserResult is Resource.Success) {
                 val currentUser = currentUserResult.data
                 val userName = currentUser?.name ?: "Unknown User"
-
-                // Fetch all cards from Firestore
+                //Fetch all cards from Firestore
                 cardRef.orderBy("time")
                     .addSnapshotListener { snapshot, e ->
                         if (e != null) {
                             data.postValue(Resource.Error(e.localizedMessage ?: "Unknown error"))
                         }
                         if (snapshot != null && !snapshot.isEmpty) {
-                            // Filter cards based on the current user's name
-                            if (!userName.contains("admin", ignoreCase = true)){
-                                val filteredCards = snapshot.documents.mapNotNull { document ->
+                            //Filter cards based on the current user's name
+                            val filteredCards = if (!userName.contains("admin", ignoreCase = true)) {
+                                snapshot.documents.mapNotNull { document ->
                                     document.toObject(Card::class.java)?.takeIf { it.userName == userName }
                                 }
-                                data.postValue(Resource.Success(filteredCards))
+                            } else {
+                                snapshot.toObjects(Card::class.java)
                             }
-                            else{//Admin user
-                                data.postValue(Resource.Success(snapshot.toObjects(Card::class.java)))
-                            }
-
+                            //Sort the filtered cards by date in descending order
+                            val sortedFilteredCards = filteredCards.sortedBy { it.time }.sortedBy { formatDateForFirestore(it.date) }
+                            data.postValue(Resource.Success(sortedFilteredCards))
                         } else {
+                            //Found no cards
                             data.postValue(Resource.Error("No data"))
                         }
                     }
             } else {
+                //Could not fetch user
                 data.postValue(Resource.Error("Failed to fetch current user"))
             }
         }
     }
+
+    //Function used to get only cards within a given date range
     override suspend fun getCardsInRange(startDate: String, endDate: String): Resource<List<Card>> {
-        return try {
-            // Get the current user to determine the query behavior
+        return safeCall {
+            //First get the current user to see if he's admin or not
             val currentUserResult = AuthRepositoryFirebase().currentUser()
             if (currentUserResult is Resource.Success) {
                 val currentUser = currentUserResult.data
                 val userName = currentUser?.name ?: "Unknown User"
-
-                // Query Firestore to get the cards within the date range
-                val querySnapshot = if (userName.contains("admin", ignoreCase = true)) {
-                    // If the user has "admin" in their name, fetch all cards within the date range
-                    cardRef.whereGreaterThanOrEqualTo("date", startDate)
-                        .whereLessThanOrEqualTo("date", endDate)
-                        .get()
-                        .await()
-                } else {
-                    // If not an admin, fetch only the cards associated with the current user within the date range
-                    cardRef.whereEqualTo("userName", userName)
-                        .whereGreaterThanOrEqualTo("date", startDate)
-                        .whereLessThanOrEqualTo("date", endDate)
-                        .get()
-                        .await()
+                val isAdmin = userName.contains("admin", ignoreCase = true)
+                //Fetch all cards from firestore
+                val querySnapshot = cardRef.get().await()
+                //Convert the snapshot to a list of cards
+                val cards = querySnapshot.toObjects(Card::class.java)
+                //Filter cards based on the date range and user role
+                val filteredCards = cards.filter { card ->
+                    //Format the existing cards dates in order to compare with formatted end and start dates
+                    val formattedCardDate = formatDateForFirestore(card.date)
+                    val formattedStartDate = formatDateForFirestore(startDate)
+                    val formattedEndDate = formatDateForFirestore(endDate)
+                    if (isAdmin) {
+                        true //If user is admin, include all cards
+                    } else {//Otherwise, include only cards associated with the current user
+                        card.userName == userName
+                    } && formattedCardDate >= formattedStartDate && formattedCardDate <= formattedEndDate
                 }
-
-                // Convert the query snapshot to a list of cards
-                val cardsInRange = querySnapshot.toObjects(Card::class.java)
-                Resource.Success(cardsInRange)
+                //Sort the filtered cards by time and date in ascending order
+                val sortedFilteredCards = filteredCards.sortedBy { it.time }.sortedBy { formatDateForFirestore(it.date) }
+                Resource.Success(sortedFilteredCards)
             } else {
                 Resource.Error("Failed to fetch current user")
             }
-        } catch (e: Exception) {
-            Resource.Error(e.message ?: "An error occurred")
         }
+    }
+
+    //Function used to format the dates to yyyyMMdd format instead of existing dd/MM/yyyy for firestore queries
+    private fun formatDateForFirestore(date: String): String {
+        val parts = date.split("/")
+        val day = parts[0].padStart(2, '0')
+        val month = parts[1].padStart(2, '0')
+        val year = parts[2]
+        return "$year$month$day"
     }
 }

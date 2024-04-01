@@ -79,7 +79,7 @@ class ReportsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        //Inflate the layout for this fragment
         binding = FragmentReportsBinding.inflate(inflater, container, false)
 
         binding.btnStartDate.setOnClickListener {
@@ -103,7 +103,6 @@ class ReportsFragment : Fragment() {
                 Toast.makeText(requireContext(),
                     getString(R.string.please_enter_both_start_and_end_date),Toast.LENGTH_SHORT).show()
             }
-            Log.d("TAG", "start date: $startDate, end date: $endDate")
         }
 
         binding.btnSendEmail.setOnClickListener {
@@ -137,7 +136,7 @@ class ReportsFragment : Fragment() {
                     (binding.recycler.adapter as? CardsAdapter)?.setCards(resource.data ?: emptyList())
                 }
                 is Resource.Error -> {
-                    // Handle error
+                    //Handle error
                     Toast.makeText(requireContext(), resource.message ?: "Filtered card error", Toast.LENGTH_SHORT).show()
                 }
                 is Resource.Loading -> {
@@ -152,7 +151,7 @@ class ReportsFragment : Fragment() {
         val subject= getString(R.string.geoclock_reports)
         val messagePartOne = getString(R.string.here_are_your_geoclock_reports_from)
         var message = messagePartOne+" $startDate - $endDate\n"
-        // Get the list of cards within the selected time frame
+        //Get the list of cards within the selected time frame
         val cards = (binding.recycler.adapter as? CardsAdapter)?.getCards() ?: emptyList()
         for (card in cards) {
             val cardText = """
