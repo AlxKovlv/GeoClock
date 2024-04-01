@@ -254,6 +254,7 @@ class HomeFragment : Fragment() {
                 bundle.putString("time", card.time.toString())
                 bundle.putString("date",card.date.toString())
                 bundle.putString("title",card.title.toString())
+                bundle.putString("note",card.note.toString())
                 bundle.putString("user",card.userName.toString())
                 if (photo!=null){
                     bundle.putString("photo",card.photo.toString())

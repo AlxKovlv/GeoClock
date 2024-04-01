@@ -61,11 +61,10 @@ class photoFragment : Fragment() {
         binding = FragmentPhotoBinding.inflate(inflater, container, false)
         //get arguments from prev fragment
         val args = this.arguments
-        val id = args?.get("id")
         val loc = args?.get("loc")
         val time = args?.get("time")
         val date = args?.get("date")
-        val title = args?.get("title")
+        val note = args?.get("note")
         val user = args?.get("user")
 
         try {
@@ -83,6 +82,7 @@ class photoFragment : Fragment() {
         binding.loc.text = ("Location: " +loc.toString())
         binding.time.text = ("Time & Date: " +time.toString()+" "+date.toString())
         binding.user.text=("User: " +user.toString())
+        binding.note.text=("note: "+note.toString())
 
 
 

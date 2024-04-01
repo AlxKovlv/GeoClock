@@ -52,4 +52,5 @@
     <string name="emailLocation">Location:</string>
     <string name="create_card">Send Location</string>
     <string name="photo">"Photo: "</string>
+    <string name="note">"note: "</string>
 </resources>
